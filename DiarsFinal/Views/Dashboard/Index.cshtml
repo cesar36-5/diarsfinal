@@ -1,0 +1,1343 @@
+﻿@using DiarsFinal.ViewModels
+@model DashboardVM
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    string seccionActual = ViewBag.Seccion ?? "Pedidos";
+
+    string ClaseMenu(string seccion)
+    {
+        return seccionActual == seccion ? "dash-link active" : "dash-link";
+    }
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF6F8;
+        --rosa-2: #FBE5EB;
+        --rosa-3: #F4C9D5;
+        --rosa-4: #E8A9BA;
+        --rosa-5: #D98EA3;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #272121;
+        --marron: #6F5954;
+        --marron-claro: #9B827C;
+        --marron-muy-claro: #C8B4AE;
+        --borde: rgba(155, 130, 124, .16);
+        --borde-rosa: rgba(217, 142, 163, .26);
+        --sombra: 0 28px 70px rgba(39, 33, 33, .10);
+        --sombra-suave: 0 14px 34px rgba(39, 33, 33, .06);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 16%, rgba(244, 201, 213, .55), transparent 30%), radial-gradient(circle at 88% 78%, rgba(200, 180, 174, .20), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FFF1F5 100%);
+        color: var(--negro);
+    }
+
+    .dashboard-page {
+        min-height: 88vh;
+        padding: 42px 0 72px;
+    }
+
+    .dashboard-shell {
+        display: grid;
+        grid-template-columns: 310px 1fr;
+        gap: 28px;
+        align-items: start;
+    }
+
+    .dash-sidebar {
+        position: sticky;
+        top: 24px;
+        border-radius: 34px;
+        background: radial-gradient(circle at 90% 8%, rgba(255,255,255,.48), transparent 28%), linear-gradient(180deg, #FAE7ED 0%, #F8DCE5 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.90);
+        overflow: hidden;
+        padding: 30px;
+    }
+
+        .dash-sidebar::after {
+            content: "Vienna";
+            display: block;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.8rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-6deg);
+            margin-top: 24px;
+            line-height: 1;
+        }
+
+    .dash-brand-kicker {
+        color: var(--marron-claro);
+        font-size: .72rem;
+        font-weight: 900;
+        letter-spacing: 2.7px;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    .dash-brand {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3.05rem;
+        font-weight: 700;
+        line-height: .95;
+        letter-spacing: 3px;
+        color: var(--negro);
+        margin-bottom: 18px;
+    }
+
+    .dash-brand-line {
+        width: 70px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--marron-muy-claro), rgba(200,180,174,.10));
+        margin-bottom: 28px;
+    }
+
+    .dash-menu-title {
+        color: var(--marron);
+        font-size: .8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+    }
+
+    .dash-nav {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 26px;
+    }
+
+    .dash-link {
+        min-height: 52px;
+        border-radius: 18px;
+        color: var(--marron);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 16px;
+        font-weight: 900;
+        transition: .25s ease;
+        border: 1px solid transparent;
+    }
+
+        .dash-link i {
+            width: 32px;
+            height: 32px;
+            border-radius: 12px;
+            background: rgba(255,255,255,.58);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-link:hover,
+        .dash-link.active {
+            background: rgba(255,255,255,.72);
+            color: var(--negro);
+            border-color: rgba(255,255,255,.88);
+            box-shadow: var(--sombra-suave);
+            transform: translateY(-2px);
+        }
+
+    .maintainer-box {
+        border-radius: 26px;
+        padding: 20px;
+        background: rgba(255,255,255,.58);
+        border: 1px solid rgba(255,255,255,.78);
+        box-shadow: var(--sombra-suave);
+    }
+
+        .maintainer-box h5 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 1.55rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+    .maintainer-actions {
+        display: grid;
+        gap: 10px;
+    }
+
+    .btn-maintainer {
+        min-height: 46px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        text-decoration: none;
+        font-weight: 900;
+        transition: .25s ease;
+    }
+
+        .btn-maintainer.products {
+            background: linear-gradient(135deg, var(--negro), #473937);
+            color: white;
+        }
+
+        .btn-maintainer.categories {
+            background: linear-gradient(135deg, var(--rosa-5), #C57F93);
+            color: white;
+        }
+
+        .btn-maintainer:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(39,33,33,.16);
+        }
+
+    .dash-main {
+        min-width: 0;
+    }
+
+    .dash-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 36px;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 58%, #FBE5EB 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.92);
+        margin-bottom: 28px;
+        padding: 42px 46px;
+    }
+
+        .dash-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F4C9D5, #FBE5EB);
+            right: -110px;
+            top: -120px;
+            opacity: .72;
+        }
+
+    .dash-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .dash-kicker {
+        color: var(--marron-claro);
+        font-size: .76rem;
+        font-weight: 900;
+        letter-spacing: 2.8px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .dash-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+
+        .dash-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .dash-text {
+        color: var(--marron);
+        line-height: 1.75;
+        max-width: 720px;
+        margin: 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+
+    .stat-card {
+        border-radius: 28px;
+        background: rgba(255,255,255,.84);
+        border: 1px solid rgba(255,255,255,.90);
+        box-shadow: var(--sombra-suave);
+        padding: 22px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .stat-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 20px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex: 0 0 54px;
+    }
+
+    .stat-card span {
+        color: var(--marron-claro);
+        font-size: .74rem;
+        font-weight: 900;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+    }
+
+    .stat-card strong {
+        display: block;
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 2.35rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-top: 6px;
+    }
+
+    .section-panel {
+        border-radius: 34px;
+        background: rgba(255,255,255,.84);
+        border: 1px solid rgba(255,255,255,.90);
+        box-shadow: var(--sombra-suave);
+        overflow: hidden;
+    }
+
+    .section-head {
+        padding: 28px 30px 22px;
+        border-bottom: 1px solid rgba(217,142,163,.18);
+        background: linear-gradient(135deg, rgba(255,246,248,.88), rgba(255,255,255,.92));
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .section-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 19px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex: 0 0 52px;
+    }
+
+    .section-head h2 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .section-head p {
+        color: var(--marron-claro);
+        margin: 6px 0 0;
+        font-size: .92rem;
+    }
+
+    .section-body {
+        padding: 24px 26px 28px;
+    }
+
+    /* PEDIDOS COMPACTOS */
+
+    .orders-list {
+        display: grid;
+        gap: 12px;
+    }
+
+    .order-card {
+        border-radius: 18px;
+        background: linear-gradient(135deg, #FFFFFF, #FFF8FA);
+        border: 1px solid rgba(217,142,163,.22);
+        box-shadow: 0 6px 16px rgba(39,33,33,.04);
+        padding: 12px 14px;
+        transition: .25s ease;
+    }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(39,33,33,.08);
+        }
+
+    .order-top {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+        align-items: start;
+    }
+
+    .order-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .order-number {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--rosa-3), var(--rosa-5));
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 18px rgba(217,142,163,.18);
+        font-size: .95rem;
+    }
+
+    .order-title h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .order-title span {
+        color: var(--marron-claro);
+        font-size: .78rem;
+    }
+
+    .order-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px 16px;
+    }
+
+    .info-item {
+        color: var(--marron);
+        line-height: 1.35;
+        font-size: .88rem;
+    }
+
+        .info-item strong {
+            color: var(--negro);
+            font-weight: 900;
+        }
+
+    .status-pill {
+        min-height: 30px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 900;
+        font-size: .76rem;
+        border: 1px solid var(--borde-rosa);
+        white-space: nowrap;
+    }
+
+    .status-0 {
+        background: #FFF8E9;
+        color: #B78332;
+        border-color: rgba(183,131,50,.22);
+    }
+
+    .status-1 {
+        background: #EEF6FF;
+        color: #557EA6;
+        border-color: rgba(85,126,166,.20);
+    }
+
+    .status-2 {
+        background: #FFF0F2;
+        color: #B96178;
+        border-color: rgba(185,97,120,.22);
+    }
+
+    .status-3 {
+        background: var(--rosa-1);
+        color: var(--rosa-5);
+    }
+
+    .status-4,
+    .status-5 {
+        background: #F1FFF4;
+        color: #5E9C72;
+        border-color: rgba(94,156,114,.22);
+    }
+
+    .order-actions {
+        display: grid;
+        gap: 7px;
+        min-width: 130px;
+    }
+
+    .btn-order {
+        min-height: 34px;
+        border: none;
+        border-radius: 999px;
+        font-weight: 900;
+        padding: 6px 12px;
+        font-size: .78rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: .22s ease;
+        white-space: nowrap;
+    }
+
+        .btn-order:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-process {
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+    }
+
+    .btn-ready {
+        background: linear-gradient(135deg, #8BBE9B, #5E9C72);
+        color: white;
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #D98EA3, #B96178);
+        color: white;
+    }
+
+    .details-box {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+    }
+
+    .dash-details {
+        border-radius: 16px;
+        background: rgba(255,255,255,.68);
+        border: 1px solid rgba(217,142,163,.18);
+        overflow: hidden;
+    }
+
+        .dash-details summary {
+            padding: 10px 14px;
+            cursor: pointer;
+            color: var(--negro);
+            font-weight: 900;
+            font-size: .86rem;
+            list-style: none;
+        }
+
+            .dash-details summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .dash-details summary::after {
+                content: " +";
+                color: var(--rosa-5);
+            }
+
+        .dash-details[open] summary::after {
+            content: " −";
+        }
+
+    .details-list {
+        padding: 0 14px 14px;
+        margin: 0;
+        list-style: none;
+        display: grid;
+        gap: 6px;
+        color: var(--marron);
+    }
+
+        .details-list li {
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: var(--rosa-1);
+            font-size: .84rem;
+        }
+
+    .report-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .report-card {
+        border-radius: 28px;
+        background: linear-gradient(135deg, #FFFFFF, #FFF8FA);
+        border: 1px solid rgba(217,142,163,.22);
+        box-shadow: var(--sombra-suave);
+        overflow: hidden;
+    }
+
+    .report-card-head {
+        padding: 22px 22px 16px;
+        border-bottom: 1px solid rgba(217,142,163,.16);
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+        .report-card-head i {
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
+            background: var(--rosa-2);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .report-card-head h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 1.55rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1;
+        }
+
+    .report-list {
+        list-style: none;
+        padding: 18px 22px 22px;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+    }
+
+        .report-list li {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            color: var(--marron);
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(155,130,124,.10);
+        }
+
+            .report-list li:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+        .report-list strong {
+            color: var(--negro);
+        }
+
+    .tracking-form {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+        align-items: end;
+        margin-bottom: 22px;
+    }
+
+    .form-label {
+        color: var(--negro);
+        font-weight: 900;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        min-height: 56px;
+        border-radius: 18px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 15px 17px;
+        color: var(--marron);
+        transition: .25s ease;
+    }
+
+        .form-control:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .22rem rgba(217,142,163,.16);
+            background: white;
+            outline: none;
+        }
+
+    .btn-search {
+        min-height: 56px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+        font-weight: 900;
+        padding: 0 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+    }
+
+    .tracking-result {
+        border-radius: 28px;
+        background: linear-gradient(135deg, #FFFFFF, #FFF8FA);
+        border: 1px solid var(--borde-rosa);
+        padding: 24px;
+        box-shadow: var(--sombra-suave);
+    }
+
+        .tracking-result h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 1.9rem;
+            font-weight: 700;
+        }
+
+    .alert {
+        border-radius: 18px;
+        border: none;
+        padding: 15px 18px;
+        font-weight: 800;
+    }
+
+    .alert-danger {
+        background: #FFF0F2;
+        color: #A94452;
+    }
+
+    .empty-state {
+        padding: 52px 24px;
+        text-align: center;
+        color: var(--marron);
+    }
+
+        .empty-state i {
+            font-size: 2.8rem;
+            color: var(--rosa-5);
+            margin-bottom: 14px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+    @@media (max-width: 1200px) {
+        .dashboard-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .dash-sidebar {
+            position: relative;
+            top: 0;
+        }
+
+        .dash-nav {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .maintainer-actions {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stats-grid,
+        .report-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .dash-nav,
+        .maintainer-actions,
+        .order-top,
+        .order-info-grid,
+        .tracking-form {
+            grid-template-columns: 1fr;
+        }
+
+        .order-actions {
+            min-width: 100%;
+        }
+
+        .dash-hero,
+        .section-body {
+            padding: 24px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .dashboard-page {
+            padding: 28px 0 60px;
+        }
+
+        .dash-sidebar,
+        .dash-hero,
+        .section-panel {
+            border-radius: 28px;
+        }
+    }
+</style>
+
+<div class="dashboard-page">
+    <div class="container-fluid px-4">
+
+        <div class="dashboard-shell">
+
+            <!-- SIDEBAR -->
+            <aside class="dash-sidebar">
+
+                <div class="dash-brand-kicker">
+                    Panel administrativo
+                </div>
+
+                <div class="dash-brand">
+                    Vienna Bake House
+                </div>
+
+                <div class="dash-brand-line"></div>
+
+                <div class="dash-menu-title">
+                    Secciones
+                </div>
+
+                <nav class="dash-nav">
+
+                    <a asp-action="Index"
+                       asp-route-seccion="Pedidos"
+                       class="@ClaseMenu("Pedidos")">
+                        <i class="bi bi-bag-heart"></i>
+                        Pedidos
+                    </a>
+
+                    <a asp-action="Index"
+                       asp-route-seccion="Informe"
+                       class="@ClaseMenu("Informe")">
+                        <i class="bi bi-bar-chart-line"></i>
+                        Informe
+                    </a>
+
+                    <a asp-action="Index"
+                       asp-route-seccion="Seguimiento"
+                       class="@ClaseMenu("Seguimiento")">
+                        <i class="bi bi-search-heart"></i>
+                        Seguimiento
+                    </a>
+
+                </nav>
+
+                <div class="maintainer-box">
+
+                    <h5>
+                        Mantenedores
+                    </h5>
+
+                    <div class="maintainer-actions">
+
+                        <a asp-controller="Productos"
+                           asp-action="Index"
+                           class="btn-maintainer products">
+                            <i class="bi bi-cake2"></i>
+                            Productos
+                        </a>
+
+                        <a asp-controller="Categorias"
+                           asp-action="Index"
+                           class="btn-maintainer categories">
+                            <i class="bi bi-tags"></i>
+                            Categorías
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+            <!-- MAIN -->
+            <main class="dash-main">
+
+                <section class="dash-hero">
+
+                    <div class="dash-hero-content">
+
+                        <div class="dash-kicker">
+                            Gestión de pastelería fina
+                        </div>
+
+                        <h1 class="dash-title">
+                            Dashboard <span>@seccionActual</span>
+                        </h1>
+
+                        <p class="dash-text">
+                            Administra pedidos, revisa informes y consulta el seguimiento de tus clientes
+                            desde un panel elegante, ordenado y visualmente delicado.
+                        </p>
+
+                    </div>
+
+                </section>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-bag-heart"></i>
+                        </div>
+                        <div>
+                            <span>Pedidos</span>
+                            <strong>@(Model?.Pedidos?.Count() ?? 0)</strong>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div>
+                            <span>Informe</span>
+                            <strong>@(Model?.Informe != null ? "OK" : "—")</strong>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+                        <div>
+                            <span>Seguimiento</span>
+                            <strong>@(Model?.PedidoSeguimiento != null ? "1" : "0")</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                @if (seccionActual == "Pedidos")
+                {
+                    <section class="section-panel">
+
+                        <div class="section-head">
+                            <div class="section-icon">
+                                <i class="bi bi-basket2-heart"></i>
+                            </div>
+
+                            <div>
+                                <h2>Pedidos</h2>
+                                <p>Gestiona el estado de cada pedido registrado.</p>
+                            </div>
+                        </div>
+
+                        <div class="section-body">
+
+                            @if (Model.Pedidos != null && Model.Pedidos.Any())
+                            {
+                                <div class="orders-list">
+
+                                    @foreach (var item in Model.Pedidos)
+                                    {
+                                        string estadoTexto = item.Pedido.Estado switch
+                                        {
+                                            "0" => "En espera",
+                                            "1" => "En proceso",
+                                            "2" => "Cancelado",
+                                            "3" => "En preparación",
+                                            "4" => "Listo para recoger",
+                                            "5" => "Recogido",
+                                            _ => "Desconocido"
+                                        };
+
+                                        string estadoClase = "status-" + item.Pedido.Estado;
+
+                                        <div class="order-card">
+
+                                            <div class="order-top">
+
+                                                <div>
+
+                                                    <div class="order-title">
+                                                        <div class="order-number">
+                                                            <i class="bi bi-receipt"></i>
+                                                        </div>
+
+                                                        <div>
+                                                            <h3>Pedido #@item.Pedido.Codigo</h3>
+                                                            <span>@estadoTexto</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="order-info-grid">
+
+                                                        <div class="info-item">
+                                                            <strong>Cliente:</strong>
+                                                            @item.Pedido.Nombre
+                                                        </div>
+
+                                                        <div class="info-item">
+                                                            <strong>Entrega:</strong>
+                                                            @item.Pedido.FechaEntrega.ToString("dd/MM/yyyy")
+                                                        </div>
+
+                                                        <div class="info-item">
+                                                            <strong>Estado:</strong>
+                                                            <span class="status-pill @estadoClase">
+                                                                <i class="bi bi-circle-fill" style="font-size:.45rem;"></i>
+                                                                @estadoTexto
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="info-item">
+                                                            <strong>Comentario:</strong>
+                                                            @(string.IsNullOrWhiteSpace(item.Pedido.Comentario) ? "Sin comentario" : item.Pedido.Comentario)
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="order-actions">
+
+                                                    @if (item.Pedido.Estado == "0")
+                                                    {
+                                                        <form asp-action="CambiarEstado" method="post">
+                                                            <input type="hidden" name="idPedido" value="@item.Pedido.IdPedido" />
+                                                            <input type="hidden" name="estado" value="1" />
+
+                                                            <button class="btn-order btn-process">
+                                                                <i class="bi bi-play-fill"></i>
+                                                                Iniciar
+                                                            </button>
+                                                        </form>
+
+                                                        <form asp-action="CambiarEstado" method="post">
+                                                            <input type="hidden" name="idPedido" value="@item.Pedido.IdPedido" />
+                                                            <input type="hidden" name="estado" value="2" />
+
+                                                            <button class="btn-order btn-cancel">
+                                                                <i class="bi bi-x-lg"></i>
+                                                                Cancelar
+                                                            </button>
+                                                        </form>
+                                                    }
+
+                                                    @if (item.Pedido.Estado == "1")
+                                                    {
+                                                        <form asp-action="CambiarEstado" method="post">
+                                                            <input type="hidden" name="idPedido" value="@item.Pedido.IdPedido" />
+                                                            <input type="hidden" name="estado" value="3" />
+
+                                                            <button class="btn-order btn-process">
+                                                                <i class="bi bi-cup-hot"></i>
+                                                                Preparar
+                                                            </button>
+                                                        </form>
+
+                                                        <form asp-action="CambiarEstado" method="post">
+                                                            <input type="hidden" name="idPedido" value="@item.Pedido.IdPedido" />
+                                                            <input type="hidden" name="estado" value="2" />
+
+                                                            <button class="btn-order btn-cancel">
+                                                                <i class="bi bi-x-lg"></i>
+                                                                Cancelar
+                                                            </button>
+                                                        </form>
+                                                    }
+
+                                                    @if (item.Pedido.Estado == "3")
+                                                    {
+                                                        <form asp-action="CambiarEstado" method="post">
+                                                            <input type="hidden" name="idPedido" value="@item.Pedido.IdPedido" />
+                                                            <input type="hidden" name="estado" value="4" />
+
+                                                            <button class="btn-order btn-ready">
+                                                                <i class="bi bi-check2-circle"></i>
+                                                                Marcar listo
+                                                            </button>
+                                                        </form>
+                                                    }
+
+                                                    @if (item.Pedido.Estado == "4")
+                                                    {
+                                                        <form asp-action="CambiarEstado" method="post">
+                                                            <input type="hidden" name="idPedido" value="@item.Pedido.IdPedido" />
+                                                            <input type="hidden" name="estado" value="5" />
+
+                                                            <button class="btn-order btn-ready">
+                                                                <i class="bi bi-bag-check"></i>
+                                                                Entregado
+                                                            </button>
+                                                        </form>
+                                                    }
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="details-box">
+
+                                                @if (item.DetallesPedido != null && item.DetallesPedido.Any())
+                                                {
+                                                    <details class="dash-details">
+                                                        <summary>Productos del pedido</summary>
+
+                                                        <ul class="details-list">
+                                                            @foreach (var detalle in item.DetallesPedido)
+                                                            {
+                                                                <li>
+                                                                    <strong>@detalle.IdProductoNavigation?.Nombre</strong>
+                                                                    · Cantidad: @detalle.Cantidad
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </details>
+                                                }
+
+                                                @if (item.DetallesPersonalizados != null && item.DetallesPersonalizados.Any())
+                                                {
+                                                    <details class="dash-details">
+                                                        <summary>Productos personalizados</summary>
+
+                                                        <ul class="details-list">
+                                                            @foreach (var detalle in item.DetallesPersonalizados.OrderBy(d => d.Posicion))
+                                                            {
+                                                                <li>
+                                                                    <strong>Nivel @detalle.Posicion:</strong>
+                                                                    @detalle.IdProductoNavigation?.Nombre
+
+                                                                    @if (!string.IsNullOrWhiteSpace(detalle.Comentario))
+                                                                    {
+                                                                        <span> → @detalle.Comentario</span>
+                                                                    }
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </details>
+                                                }
+
+                                            </div>
+
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="bi bi-bag-x"></i>
+                                    <h3>No hay pedidos</h3>
+                                    <p>Aún no hay pedidos registrados para mostrar.</p>
+                                </div>
+                            }
+
+                        </div>
+
+                    </section>
+                }
+
+                @if (seccionActual == "Informe" && Model.Informe != null)
+                {
+                    <section class="section-panel">
+
+                        <div class="section-head">
+                            <div class="section-icon">
+                                <i class="bi bi-bar-chart-line"></i>
+                            </div>
+
+                            <div>
+                                <h2>Informe</h2>
+                                <p>Resumen de productos y meses con mayor movimiento.</p>
+                            </div>
+                        </div>
+
+                        <div class="section-body">
+
+                            <div class="report-grid">
+
+                                <div class="report-card">
+                                    <div class="report-card-head">
+                                        <i class="bi bi-gift"></i>
+                                        <h3>Top finales</h3>
+                                    </div>
+
+                                    <ul class="report-list">
+                                        @foreach (var p in Model.Informe.TopFinales)
+                                        {
+                                            <li>
+                                                <span>@p.Nombre</span>
+                                                <strong>@p.Cantidad</strong>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div class="report-card">
+                                    <div class="report-card-head">
+                                        <i class="bi bi-stars"></i>
+                                        <h3>Top personalizados</h3>
+                                    </div>
+
+                                    <ul class="report-list">
+                                        @foreach (var p in Model.Informe.TopPersonalizados)
+                                        {
+                                            <li>
+                                                <span>@p.Nombre</span>
+                                                <strong>@p.Cantidad</strong>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div class="report-card">
+                                    <div class="report-card-head">
+                                        <i class="bi bi-calendar-heart"></i>
+                                        <h3>Top meses</h3>
+                                    </div>
+
+                                    <ul class="report-list">
+                                        @foreach (var m in Model.Informe.TopMeses)
+                                        {
+                                            <li>
+                                                <span>@m.Mes</span>
+                                                <strong>@m.Cantidad</strong>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+                }
+
+                @if (seccionActual == "Informe" && Model.Informe == null)
+                {
+                    <section class="section-panel">
+                        <div class="section-body">
+                            <div class="empty-state">
+                                <i class="bi bi-bar-chart"></i>
+                                <h3>No hay informe disponible</h3>
+                                <p>No se encontraron datos para mostrar en el informe.</p>
+                            </div>
+                        </div>
+                    </section>
+                }
+
+                @if (seccionActual == "Seguimiento")
+                {
+                    <section class="section-panel">
+
+                        <div class="section-head">
+                            <div class="section-icon">
+                                <i class="bi bi-search-heart"></i>
+                            </div>
+
+                            <div>
+                                <h2>Seguimiento</h2>
+                                <p>Busca un pedido por código y confirma pagos pendientes.</p>
+                            </div>
+                        </div>
+
+                        <div class="section-body">
+
+                            <form asp-action="BuscarSeguimiento"
+                                  method="post"
+                                  class="tracking-form">
+
+                                <div>
+                                    <label class="form-label">
+                                        Código del pedido
+                                    </label>
+
+                                    <input type="number"
+                                           name="codigo"
+                                           class="form-control"
+                                           placeholder="Ej. 1001"
+                                           required />
+                                </div>
+
+                                <button class="btn-search">
+                                    Buscar
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+
+                            </form>
+
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger mt-3">
+                                    <i class="bi bi-exclamation-circle me-2"></i>
+                                    @ViewBag.Error
+                                </div>
+                            }
+
+                            @if (Model.PedidoSeguimiento != null)
+                            {
+                                string estadoTexto = Model.PedidoSeguimiento.Estado switch
+                                {
+                                    "0" => "En espera",
+                                    "1" => "En proceso",
+                                    "2" => "Cancelado",
+                                    "3" => "En preparación",
+                                    "4" => "Listo para recoger",
+                                    "5" => "Recogido",
+                                    _ => "Desconocido"
+                                };
+
+                                string estadoClase = "status-" + Model.PedidoSeguimiento.Estado;
+
+                                <div class="tracking-result mt-4">
+
+                                    <h3>
+                                        Pedido #@Model.PedidoSeguimiento.Codigo
+                                    </h3>
+
+                                    <p>
+                                        <strong>Cliente:</strong>
+                                        @Model.PedidoSeguimiento.Nombre
+                                    </p>
+
+                                    <p>
+                                        <strong>Estado:</strong>
+                                        <span class="status-pill @estadoClase">
+                                            <i class="bi bi-circle-fill" style="font-size:.45rem;"></i>
+                                            @estadoTexto
+                                        </span>
+                                    </p>
+
+                                    @if (Model.PedidoSeguimiento.Estado == "0")
+                                    {
+                                        <form asp-action="ConfirmarPago"
+                                              method="post"
+                                              class="mt-3">
+
+                                            <input type="hidden"
+                                                   name="idPedido"
+                                                   value="@Model.PedidoSeguimiento.IdPedido" />
+
+                                            <button class="btn-order btn-ready">
+                                                <i class="bi bi-check-circle"></i>
+                                                Confirmar pago
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </section>
+                }
+
+            </main>
+
+        </div>
+
+    </div>
+</div>

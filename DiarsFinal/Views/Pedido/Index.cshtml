@@ -1,0 +1,1104 @@
+﻿@model List<(DiarsFinal.Models.Producto producto, int cantidad)>
+
+@{
+    ViewData["Title"] = "Pedido";
+
+    decimal total = 0;
+
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            total += item.producto.Precio * item.cantidad;
+        }
+    }
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF6F8;
+        --rosa-2: #FBE5EB;
+        --rosa-3: #F4C9D5;
+        --rosa-4: #E8A9BA;
+        --rosa-5: #D98EA3;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #272121;
+        --marron: #6F5954;
+        --marron-claro: #9B827C;
+        --marron-muy-claro: #C8B4AE;
+        --borde: rgba(155, 130, 124, .16);
+        --borde-rosa: rgba(217, 142, 163, .26);
+        --sombra: 0 20px 46px rgba(39, 33, 33, .09);
+        --sombra-suave: 0 10px 24px rgba(39, 33, 33, .055);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 16%, rgba(244, 201, 213, .45), transparent 30%), radial-gradient(circle at 88% 78%, rgba(200, 180, 174, .18), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FFF1F5 100%);
+        color: var(--negro);
+    }
+
+    .order-page {
+        min-height: 88vh;
+        padding: 30px 0 58px;
+    }
+
+    .order-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 58%, #FBE5EB 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.92);
+        margin-bottom: 24px;
+    }
+
+        .order-hero::before {
+            content: "";
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F4C9D5, #FBE5EB);
+            right: -100px;
+            top: -100px;
+            opacity: .76;
+        }
+
+        .order-hero::after {
+            content: "Vienna";
+            position: absolute;
+            right: 34px;
+            bottom: 4px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.45rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-5deg);
+        }
+
+    .order-hero-inner {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1.18fr .82fr;
+        min-height: 220px;
+    }
+
+    .order-hero-content {
+        padding: 34px 42px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .order-kicker {
+        color: var(--marron-claro);
+        font-size: .64rem;
+        font-weight: 900;
+        letter-spacing: 2.3px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .order-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: clamp(2.05rem, 3.3vw, 3.25rem);
+        font-weight: 700;
+        line-height: .96;
+        margin-bottom: 10px;
+    }
+
+        .order-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .order-text {
+        color: var(--marron);
+        line-height: 1.55;
+        max-width: 560px;
+        margin: 0;
+        font-size: .88rem;
+    }
+
+    .order-hero-side {
+        position: relative;
+        background: radial-gradient(circle at 50% 38%, rgba(255,255,255,.34), transparent 28%), linear-gradient(145deg, #F8DDE5 0%, #F4C9D5 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        min-height: 220px;
+    }
+
+        .order-hero-side::before {
+            content: "";
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            border: 1px solid rgba(111, 89, 84, .16);
+            top: 26px;
+            right: -64px;
+        }
+
+    .total-badge {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 18px;
+    }
+
+        .total-badge i {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.72);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 22px rgba(39,33,33,.10);
+        }
+
+        .total-badge span {
+            display: block;
+            color: var(--marron);
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: .62rem;
+            margin-bottom: 5px;
+        }
+
+        .total-badge strong {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+    .alert {
+        border-radius: 14px;
+        border: none;
+        padding: 12px 15px;
+        box-shadow: var(--sombra-suave);
+        font-weight: 800;
+        font-size: .88rem;
+    }
+
+    .alert-danger {
+        background: #FFF0F2;
+        color: #A94452;
+    }
+
+    .alert-success {
+        background: #F1FFF4;
+        color: #527A58;
+    }
+
+    .order-layout {
+        display: grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    .premium-panel {
+        background: rgba(255,255,255,.86);
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 24px;
+        box-shadow: var(--sombra-suave);
+        overflow: hidden;
+    }
+
+    .panel-head {
+        padding: 18px 20px 15px;
+        border-bottom: 1px solid rgba(217,142,163,.18);
+        background: linear-gradient(135deg, rgba(255,246,248,.86), rgba(255,255,255,.90));
+    }
+
+    .panel-head-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .panel-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .98rem;
+        flex: 0 0 38px;
+    }
+
+    .panel-head h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.42rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .panel-head p {
+        color: var(--marron-claro);
+        font-size: .78rem;
+        margin: 4px 0 0;
+    }
+
+    .cart-table-wrap {
+        overflow-x: auto;
+    }
+
+    .cart-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .cart-table thead th {
+            background: #FFF8FA;
+            color: var(--marron-claro);
+            font-size: .62rem;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            font-weight: 900;
+            padding: 11px 12px;
+            border-bottom: 1px solid rgba(217,142,163,.20);
+            white-space: nowrap;
+        }
+
+        .cart-table tbody td {
+            padding: 12px;
+            color: var(--marron);
+            border-bottom: 1px solid rgba(155,130,124,.10);
+            vertical-align: middle;
+            font-size: .82rem;
+        }
+
+        .cart-table tbody tr {
+            transition: .22s ease;
+        }
+
+            .cart-table tbody tr:hover {
+                background: rgba(255,246,248,.72);
+            }
+
+    .product-cell {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        min-width: 175px;
+    }
+
+    .product-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--rosa-3), var(--rosa-5));
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 18px rgba(217,142,163,.20);
+        flex: 0 0 34px;
+        font-size: .82rem;
+    }
+
+    .product-name {
+        color: var(--negro);
+        font-weight: 900;
+        line-height: 1.15;
+        font-size: .86rem;
+    }
+
+    .product-sub {
+        color: var(--marron-claro);
+        font-size: .70rem;
+        margin-top: 1px;
+    }
+
+    .price-text {
+        color: var(--negro);
+        font-weight: 900;
+        white-space: nowrap;
+        font-size: .82rem;
+    }
+
+    .qty-pill {
+        min-width: 34px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--rosa-1);
+        border: 1px solid var(--borde-rosa);
+        color: var(--rosa-5);
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .78rem;
+    }
+
+    .actions-cell {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: nowrap;
+    }
+
+    .action-form {
+        display: inline-flex;
+        margin: 0;
+    }
+
+    .btn-action {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: .78rem;
+        transition: .22s ease;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-plus {
+        background: linear-gradient(135deg, #8BBE9B, #5E9C72);
+    }
+
+    .btn-minus {
+        background: linear-gradient(135deg, #E8BE73, #D89A3B);
+    }
+
+    .btn-delete {
+        width: auto;
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #D98EA3, #B96178);
+        gap: 5px;
+        font-size: .72rem;
+    }
+
+    .cart-summary {
+        padding: 16px 20px 18px;
+        background: linear-gradient(135deg, #FFF6F8, #FFFFFF);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        padding-top: 13px;
+        border-top: 1px solid rgba(155,130,124,.12);
+    }
+
+        .summary-row span {
+            color: var(--marron-claro);
+            font-weight: 900;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            font-size: .66rem;
+        }
+
+        .summary-row strong {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-label {
+        color: var(--negro);
+        font-size: .78rem;
+        font-weight: 900;
+        margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        min-height: 42px;
+        border-radius: 14px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 10px 13px;
+        font-size: .84rem;
+        color: var(--marron);
+        transition: .25s ease;
+    }
+
+        .form-control::placeholder {
+            color: #B5A29D;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .18rem rgba(217,142,163,.16);
+            background: white;
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 86px;
+        resize: vertical;
+    }
+
+    .form-grid-two {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .payment-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 6px;
+    }
+
+    .payment-option {
+        position: relative;
+    }
+
+        .payment-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    .payment-box {
+        min-height: 58px;
+        border-radius: 16px;
+        border: 1px solid var(--borde-rosa);
+        background: linear-gradient(180deg, #FFFFFF, #FFF9FB);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: var(--marron);
+        font-weight: 900;
+        cursor: pointer;
+        transition: .25s ease;
+        font-size: .76rem;
+    }
+
+        .payment-box i {
+            font-size: 1rem;
+            color: var(--marron-claro);
+        }
+
+    .payment-option input:checked + .payment-box {
+        background: linear-gradient(135deg, var(--rosa-1), #FFFFFF);
+        border-color: var(--rosa-5);
+        color: var(--negro);
+        box-shadow: 0 10px 22px rgba(217,142,163,.16);
+        transform: translateY(-2px);
+    }
+
+        .payment-option input:checked + .payment-box i {
+            color: var(--rosa-5);
+        }
+
+    .form-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 9px;
+        margin-top: 20px;
+    }
+
+    .btn-generate {
+        min-height: 46px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+        font-weight: 900;
+        font-size: .84rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 13px 26px rgba(39, 33, 33, .16);
+        transition: .25s ease;
+        text-decoration: none;
+    }
+
+        .btn-generate:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(39, 33, 33, .22);
+        }
+
+    .btn-back {
+        min-height: 44px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.72);
+        color: var(--marron);
+        border: 1px solid var(--borde-rosa);
+        font-weight: 900;
+        font-size: .82rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: .25s ease;
+    }
+
+        .btn-back:hover {
+            color: var(--negro);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-suave);
+        }
+
+    .empty-order {
+        padding: 42px 22px;
+        text-align: center;
+        color: var(--marron);
+    }
+
+        .empty-order i {
+            font-size: 2.2rem;
+            color: var(--rosa-5);
+            margin-bottom: 12px;
+        }
+
+        .empty-order h4 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-order p {
+            font-size: .86rem;
+            margin-bottom: 0;
+        }
+
+    @@media (max-width: 1100px) {
+        .order-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 991px) {
+        .order-hero-inner {
+            grid-template-columns: 1fr;
+        }
+
+        .order-hero-side {
+            min-height: 170px;
+        }
+
+        .order-hero-content {
+            padding: 32px 30px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .form-grid-two,
+        .payment-options {
+            grid-template-columns: 1fr;
+        }
+
+        .cart-table thead {
+            display: none;
+        }
+
+        .cart-table,
+        .cart-table tbody,
+        .cart-table tr,
+        .cart-table td {
+            display: block;
+            width: 100%;
+        }
+
+            .cart-table tbody tr {
+                padding: 14px 18px;
+                border-bottom: 1px solid rgba(155,130,124,.10);
+            }
+
+            .cart-table tbody td {
+                padding: 6px 0;
+                border: none;
+            }
+
+        .actions-cell {
+            margin-top: 10px;
+        }
+
+        .btn-delete {
+            padding: 0 12px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .order-page {
+            padding: 26px 0 52px;
+        }
+
+        .order-hero,
+        .premium-panel {
+            border-radius: 22px;
+        }
+
+        .order-title {
+            font-size: 2.25rem;
+        }
+
+        .order-hero-content,
+        .panel-head,
+        .form-body {
+            padding: 20px;
+        }
+
+        .total-badge strong,
+        .summary-row strong {
+            font-size: 1.85rem;
+        }
+    }
+</style>
+
+<div class="order-page">
+    <div class="container">
+
+        <section class="order-hero">
+            <div class="order-hero-inner">
+
+                <div class="order-hero-content">
+                    <div class="order-kicker">
+                        Resumen de compra
+                    </div>
+
+                    <h1 class="order-title">
+                        Mi <span>pedido</span>
+                    </h1>
+
+                    <p class="order-text">
+                        Revisa los productos seleccionados, ajusta las cantidades y completa tus datos
+                        para preparar tu pedido con el cuidado de Vienna Bake House.
+                    </p>
+                </div>
+
+                <div class="order-hero-side">
+                    <div class="total-badge">
+                        <i class="bi bi-bag-heart"></i>
+
+                        <span>
+                            Total del pedido
+                        </span>
+
+                        <strong>
+                            S/. @String.Format("{0:N2}", total)
+                        </strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mb-4">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                @TempData["Error"]
+            </div>
+        }
+
+        @if (TempData["Correcto"] != null)
+        {
+            <div class="alert alert-success mb-4">
+                <i class="bi bi-check-circle me-2"></i>
+                @TempData["Correcto"]
+            </div>
+        }
+
+        <div class="order-layout">
+
+            <div class="premium-panel">
+
+                <div class="panel-head">
+                    <div class="panel-head-row">
+                        <div class="panel-icon">
+                            <i class="bi bi-basket2-heart"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Productos seleccionados
+                            </h3>
+
+                            <p>
+                                Ajusta cantidades o elimina productos de tu pedido.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="cart-table-wrap">
+                        <table class="cart-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    decimal subtotal = item.producto.Precio * item.cantidad;
+
+                                    <tr>
+                                        <td>
+                                            <div class="product-cell">
+                                                <div class="product-icon">
+                                                    <i class="bi bi-stars"></i>
+                                                </div>
+
+                                                <div>
+                                                    <div class="product-name">
+                                                        @item.producto.Nombre
+                                                    </div>
+
+                                                    <div class="product-sub">
+                                                        Producto de catálogo
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <span class="price-text">
+                                                S/. @String.Format("{0:N2}", item.producto.Precio)
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="qty-pill">
+                                                @item.cantidad
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="price-text">
+                                                S/. @String.Format("{0:N2}", subtotal)
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="actions-cell">
+
+                                                <form asp-controller="Pedido"
+                                                      asp-action="ModificarCantidad"
+                                                      method="post"
+                                                      class="action-form">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <input type="hidden"
+                                                           name="idProducto"
+                                                           value="@item.producto.IdProducto" />
+
+                                                    <input type="hidden"
+                                                           name="cantidad"
+                                                           value="1" />
+
+                                                    <button type="submit"
+                                                            class="btn-action btn-plus"
+                                                            title="Aumentar">
+                                                        +
+                                                    </button>
+
+                                                </form>
+
+                                                <form asp-controller="Pedido"
+                                                      asp-action="ModificarCantidad"
+                                                      method="post"
+                                                      class="action-form">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <input type="hidden"
+                                                           name="idProducto"
+                                                           value="@item.producto.IdProducto" />
+
+                                                    <input type="hidden"
+                                                           name="cantidad"
+                                                           value="-1" />
+
+                                                    <button type="submit"
+                                                            class="btn-action btn-minus"
+                                                            title="Reducir">
+                                                        -
+                                                    </button>
+
+                                                </form>
+
+                                                <form asp-controller="Pedido"
+                                                      asp-action="EliminarProducto"
+                                                      method="post"
+                                                      class="action-form">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <input type="hidden"
+                                                           name="idProducto"
+                                                           value="@item.producto.IdProducto" />
+
+                                                    <button type="submit"
+                                                            class="btn-action btn-delete"
+                                                            title="Eliminar">
+                                                        <i class="bi bi-trash3"></i>
+                                                        Eliminar
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                S/. @String.Format("{0:N2}", total)
+                            </strong>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-order">
+                        <i class="bi bi-bag-x"></i>
+
+                        <h4>
+                            Tu pedido está vacío
+                        </h4>
+
+                        <p>
+                            Agrega productos desde el catálogo para continuar.
+                        </p>
+
+                        <a asp-controller="Catalogo"
+                           asp-action="Index"
+                           class="btn-back mt-3">
+                            Volver al catálogo
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                }
+
+            </div>
+
+            <div class="premium-panel">
+
+                <div class="panel-head">
+                    <div class="panel-head-row">
+                        <div class="panel-icon">
+                            <i class="bi bi-person-heart"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Datos del pedido
+                            </h3>
+
+                            <p>
+                                Completa tus datos para generar el pedido.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-body">
+
+                    <form asp-controller="Pedido"
+                          asp-action="GenerarPedido"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Nombre completo
+                            </label>
+
+                            <input type="text"
+                                   name="nombre"
+                                   class="form-control"
+                                   placeholder="Ingresa tu nombre completo"
+                                   required />
+                        </div>
+
+                        <div class="form-grid-two">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    DNI
+                                </label>
+
+                                <input type="text"
+                                       name="dni"
+                                       maxlength="8"
+                                       minlength="8"
+                                       class="form-control"
+                                       placeholder="8 dígitos"
+                                       required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Teléfono
+                                </label>
+
+                                <input type="text"
+                                       name="telefono"
+                                       maxlength="9"
+                                       minlength="9"
+                                       class="form-control"
+                                       placeholder="9 dígitos"
+                                       required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Fecha de recojo
+                            </label>
+
+                            <input type="date"
+                                   name="fechaEntrega"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Comentario opcional
+                            </label>
+
+                            <textarea name="comentario"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Ejemplo: sin azúcar, entregar temprano, dedicatoria, etc."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Método de pago
+                            </label>
+
+                            <div class="payment-options">
+
+                                <label class="payment-option">
+                                    <input type="radio"
+                                           name="metodoPago"
+                                           value="YAPE"
+                                           checked
+                                           required />
+
+                                    <span class="payment-box">
+                                        <i class="bi bi-phone"></i>
+                                        Yape
+                                    </span>
+                                </label>
+
+                                <label class="payment-option">
+                                    <input type="radio"
+                                           name="metodoPago"
+                                           value="TARJETA"
+                                           required />
+
+                                    <span class="payment-box">
+                                        <i class="bi bi-credit-card-2-front"></i>
+                                        Tarjeta
+                                    </span>
+                                </label>
+
+                                <label class="payment-option">
+                                    <input type="radio"
+                                           name="metodoPago"
+                                           value="EFECTIVO"
+                                           required />
+
+                                    <span class="payment-box">
+                                        <i class="bi bi-cash-coin"></i>
+                                        Efectivo
+                                    </span>
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+
+                            <button type="submit"
+                                    class="btn-generate"
+                                    @(Model == null || !Model.Any() ? "disabled" : "")>
+                                Generar pedido
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+
+                            <a asp-controller="Catalogo"
+                               asp-action="Index"
+                               class="btn-back">
+                                Volver al catálogo
+                                <i class="bi bi-bag-heart"></i>
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

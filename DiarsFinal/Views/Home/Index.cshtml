@@ -1,0 +1,984 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+
+    var heroCake = "https://images.unsplash.com/photo-1677840147140-252adb9ca347?auto=format&fit=crop&w=1600&q=80";
+    var pinkCake = "https://images.unsplash.com/photo-1707144022525-afdd6646c59b?auto=format&fit=crop&w=1200&q=80";
+    var cupcakes = "https://images.unsplash.com/photo-1677840147161-49e9c1508b0b?auto=format&fit=crop&w=1200&q=80";
+    var desserts = "https://images.unsplash.com/photo-1644865439228-49106cb7b601?auto=format&fit=crop&w=1200&q=80";
+}
+
+<style>
+    .home-lux {
+        --pink-50: #FFF7F9;
+        --pink-100: #FBE7ED;
+        --pink-200: #F3CBD7;
+        --pink-300: #E8A9BA;
+        --pink-500: #D88EA2;
+        --cream: #FFFDFC;
+        --cream-2: #FFF8F4;
+        --white: #FFFFFF;
+        --ink: #271F1F;
+        --brown: #6F5954;
+        --brown-soft: #9B827C;
+        --gold: #C9A45C;
+        --gold-soft: #EAD39A;
+        --gold-light: #FFF3C7;
+        --line: rgba(111, 89, 84, .14);
+        --line-pink: rgba(216, 142, 162, .30);
+        --line-gold: rgba(201, 164, 92, .34);
+        --shadow-xl: 0 34px 90px rgba(39, 31, 31, .16);
+        --shadow-md: 0 20px 48px rgba(39, 31, 31, .10);
+        --shadow-sm: 0 12px 30px rgba(39, 31, 31, .07);
+        overflow: hidden;
+        position: relative;
+        color: var(--ink);
+        background: radial-gradient(circle at 9% 10%, rgba(243, 203, 215, .62), transparent 29%), radial-gradient(circle at 92% 12%, rgba(234, 211, 154, .42), transparent 26%), radial-gradient(circle at 86% 82%, rgba(216, 142, 162, .24), transparent 31%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 46%, #FFF1F5 100%);
+    }
+
+        .home-lux::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .42;
+            background-image: linear-gradient(45deg, rgba(201,164,92,.08) 1px, transparent 1px), linear-gradient(-45deg, rgba(216,142,162,.08) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, black, transparent 82%);
+        }
+
+        .home-lux > * {
+            position: relative;
+            z-index: 2;
+        }
+
+    .lux-section {
+        padding: 38px 0 72px;
+    }
+
+    .lux-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 44px;
+        min-height: 640px;
+        background: radial-gradient(circle at 78% 18%, rgba(234,211,154,.30), transparent 33%), radial-gradient(circle at 22% 86%, rgba(216,142,162,.20), transparent 35%), linear-gradient(120deg, rgba(255,253,252,.98) 0%, rgba(255,247,249,.95) 48%, rgba(251,231,237,.78) 100%);
+        border: 1px solid rgba(255,255,255,.96);
+        box-shadow: var(--shadow-xl);
+    }
+
+        .lux-hero::before {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border-radius: 32px;
+            border: 1px solid rgba(201,164,92,.34);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .lux-hero::after {
+            content: "Vienna";
+            position: absolute;
+            right: 42px;
+            bottom: -4px;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(5rem, 9.5vw, 9.4rem);
+            color: rgba(111,89,84,.08);
+            transform: rotate(-6deg);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+    .hero-grid {
+        position: relative;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: 1.02fr .98fr;
+        min-height: 640px;
+    }
+
+    .hero-copy {
+        padding: 76px 38px 76px 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .eyebrow {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 20px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.78);
+        border: 1px solid var(--line-gold);
+        color: var(--brown);
+        font-size: .70rem;
+        font-weight: 900;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(14px);
+        margin-bottom: 26px;
+    }
+
+        .eyebrow i {
+            color: var(--gold);
+        }
+
+    .hero-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--ink);
+        font-size: clamp(2.8rem, 5.2vw, 5.4rem);
+        font-weight: 700;
+        letter-spacing: -.9px;
+        line-height: .87;
+        margin: 0 0 26px;
+    }
+
+        .hero-title span {
+            display: block;
+            font-style: italic;
+            background: linear-gradient(90deg, var(--pink-500), var(--gold), var(--pink-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    .hero-text {
+        max-width: 545px;
+        color: var(--brown);
+        font-size: 1.02rem;
+        line-height: 1.85;
+        margin: 0 0 32px;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 36px;
+    }
+
+    .btn-lux-dark,
+    .btn-lux-light {
+        position: relative;
+        overflow: hidden;
+        min-height: 52px;
+        padding: 0 26px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        text-decoration: none;
+        font-size: .86rem;
+        font-weight: 900;
+        transition: .28s ease;
+    }
+
+        .btn-lux-dark::before,
+        .btn-lux-light::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-120%);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent);
+            transition: .45s ease;
+        }
+
+        .btn-lux-dark:hover::before,
+        .btn-lux-light:hover::before {
+            transform: translateX(120%);
+        }
+
+    .btn-lux-dark {
+        color: white;
+        background: linear-gradient(135deg, rgba(255,255,255,.10), transparent), linear-gradient(135deg, var(--ink), #4A3937);
+        border: 1px solid rgba(201,164,92,.34);
+        box-shadow: 0 18px 42px rgba(39,31,31,.20);
+    }
+
+        .btn-lux-dark:hover {
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 26px 58px rgba(39,31,31,.28);
+        }
+
+    .btn-lux-light {
+        color: var(--brown);
+        background: rgba(255,255,255,.78);
+        border: 1px solid var(--line-pink);
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(14px);
+    }
+
+        .btn-lux-light:hover {
+            color: var(--ink);
+            transform: translateY(-4px);
+            border-color: var(--line-gold);
+            box-shadow: var(--shadow-md);
+        }
+
+    .hero-proof {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(108px, 1fr));
+        gap: 13px;
+        max-width: 530px;
+    }
+
+    .proof-card {
+        position: relative;
+        overflow: hidden;
+        padding: 17px;
+        border-radius: 23px;
+        background: rgba(255,255,255,.74);
+        border: 1px solid rgba(255,255,255,.92);
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(14px);
+    }
+
+        .proof-card::after {
+            content: "";
+            position: absolute;
+            width: 74px;
+            height: 74px;
+            top: -38px;
+            right: -34px;
+            border-radius: 50%;
+            background: rgba(234,211,154,.40);
+        }
+
+        .proof-card strong {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--ink);
+            font-size: 1.92rem;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .proof-card span {
+            display: block;
+            color: var(--brown-soft);
+            font-size: .76rem;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+    .hero-art {
+        position: relative;
+        padding: 58px 60px 58px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cake-frame {
+        position: relative;
+        width: min(520px, 100%);
+        height: 540px;
+    }
+
+        .cake-frame::before {
+            content: "";
+            position: absolute;
+            inset: 8px 18px 48px 28px;
+            border-radius: 50% 50% 42px 42px;
+            border: 1px solid rgba(201,164,92,.38);
+            transform: rotate(-5deg);
+            pointer-events: none;
+        }
+
+    .cake-photo {
+        position: absolute;
+        inset: 42px 34px 76px 62px;
+        border-radius: 47% 47% 38px 38px;
+        overflow: hidden;
+        background: linear-gradient(180deg, transparent 46%, rgba(39,31,31,.28)), var(--image);
+        background-size: cover;
+        background-position: center;
+        border: 12px solid rgba(255,255,255,.78);
+        outline: 1px solid rgba(201,164,92,.36);
+        box-shadow: var(--shadow-xl);
+    }
+
+        .cake-photo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 4%, rgba(255,255,255,.36), transparent 35%), linear-gradient(120deg, rgba(234,211,154,.18), transparent 40%), linear-gradient(180deg, transparent 58%, rgba(39,31,31,.22));
+        }
+
+    .float-card {
+        position: absolute;
+        z-index: 4;
+        border-radius: 25px;
+        background: rgba(255,255,255,.84);
+        border: 1px solid rgba(255,255,255,.95);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(16px);
+    }
+
+    .float-price {
+        top: 24px;
+        right: 0;
+        min-width: 174px;
+        padding: 18px 20px;
+    }
+
+        .float-price span {
+            display: block;
+            color: var(--brown-soft);
+            font-size: .62rem;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .float-price strong {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gold);
+            font-size: 1.18rem;
+            line-height: 1;
+        }
+
+    .float-detail {
+        left: 0;
+        bottom: 88px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .float-detail i {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pink-100), var(--gold-light));
+            color: var(--pink-500);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .float-detail strong {
+            display: block;
+            color: var(--ink);
+            font-size: .88rem;
+            line-height: 1.1;
+        }
+
+        .float-detail span {
+            color: var(--brown-soft);
+            font-size: .74rem;
+            font-weight: 800;
+        }
+
+    .feature-mini {
+        position: absolute;
+        right: 26px;
+        bottom: 0;
+        z-index: 5;
+        width: 242px;
+        border-radius: 30px;
+        padding: 14px;
+        background: rgba(255,255,255,.86);
+        border: 1px solid rgba(255,255,255,.95);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(16px);
+    }
+
+    .feature-mini-img {
+        height: 132px;
+        border-radius: 23px;
+        background: var(--image);
+        background-size: cover;
+        background-position: center;
+        margin-bottom: 13px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .feature-mini-img::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent, rgba(39,31,31,.18));
+        }
+
+    .feature-mini span {
+        display: block;
+        color: var(--brown-soft);
+        font-size: .60rem;
+        font-weight: 900;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .feature-mini h4 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--ink);
+        font-size: 1.46rem;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .lux-strip {
+        margin-top: 24px;
+        border-radius: 28px;
+        background: rgba(255,255,255,.76);
+        border: 1px solid rgba(255,255,255,.90);
+        box-shadow: var(--shadow-sm);
+        padding: 15px 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 11px;
+        backdrop-filter: blur(14px);
+    }
+
+    .strip-item {
+        min-height: 54px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        color: var(--brown);
+        font-size: .82rem;
+        font-weight: 900;
+        text-align: center;
+        transition: .25s ease;
+    }
+
+        .strip-item:hover {
+            background: rgba(255,247,249,.72);
+            color: var(--ink);
+            transform: translateY(-2px);
+        }
+
+        .strip-item i {
+            color: var(--gold);
+        }
+
+    /* SECCIÓN DE COLECCIONES MÁS COMPACTA */
+    .showcase-section {
+        padding: 68px 0 76px;
+    }
+
+    .section-head {
+        max-width: 720px;
+        margin: 0 auto 30px;
+        text-align: center;
+    }
+
+    .section-kicker {
+        color: var(--brown-soft);
+        font-size: .66rem;
+        font-weight: 900;
+        letter-spacing: 2.8px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .section-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--ink);
+        font-size: clamp(2.2rem, 3.6vw, 3.55rem);
+        line-height: 1;
+        font-weight: 700;
+        margin: 0 0 13px;
+    }
+
+        .section-title span {
+            color: var(--pink-500);
+            font-style: italic;
+        }
+
+    .section-text {
+        color: var(--brown);
+        line-height: 1.65;
+        max-width: 590px;
+        margin: 0 auto;
+        font-size: .95rem;
+    }
+
+    .collection-grid {
+        display: grid;
+        grid-template-columns: 1.05fr .82fr;
+        gap: 18px;
+        max-width: 1040px;
+        margin: 0 auto;
+        align-items: stretch;
+    }
+
+    .collection-main,
+    .collection-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        background: linear-gradient(180deg, transparent 30%, rgba(39,31,31,.80) 100%), var(--image);
+        background-size: cover;
+        background-position: center;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(255,255,255,.65);
+        transition: .32s ease;
+    }
+
+        .collection-main::before,
+        .collection-card::before {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,.22);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .collection-main:hover,
+        .collection-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(201,164,92,.46);
+        }
+
+    .collection-main {
+        min-height: 410px;
+    }
+
+    .collection-side {
+        display: grid;
+        gap: 18px;
+    }
+
+    .collection-card {
+        min-height: 196px;
+    }
+
+    .collection-content {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        z-index: 3;
+        color: white;
+    }
+
+    .tag {
+        width: fit-content;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.20);
+        border: 1px solid rgba(255,255,255,.26);
+        backdrop-filter: blur(12px);
+        color: white;
+        font-size: .59rem;
+        font-weight: 900;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .collection-content h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.92rem;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0 0 9px;
+    }
+
+    .collection-card .collection-content h3 {
+        font-size: 1.38rem;
+    }
+
+    .collection-content p {
+        color: rgba(255,255,255,.86);
+        line-height: 1.5;
+        margin: 0 0 12px;
+        max-width: 420px;
+        font-size: .84rem;
+    }
+
+    .collection-content a {
+        color: var(--gold-light);
+        text-decoration: none;
+        font-weight: 900;
+        font-size: .82rem;
+        transition: .25s ease;
+    }
+
+        .collection-content a:hover {
+            color: white;
+        }
+
+    @@media (max-width: 991px) {
+        .lux-section {
+            padding-top: 28px;
+        }
+
+        .hero-grid,
+        .collection-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-copy {
+            padding: 58px 34px 24px;
+            text-align: center;
+            align-items: center;
+        }
+
+        .hero-actions {
+            justify-content: center;
+        }
+
+        .hero-art {
+            padding: 0 30px 50px;
+        }
+
+        .cake-frame {
+            height: 490px;
+        }
+
+        .lux-strip {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .collection-grid {
+            max-width: 720px;
+        }
+
+        .collection-main {
+            min-height: 360px;
+        }
+
+        .collection-card {
+            min-height: 230px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .lux-hero,
+        .collection-main,
+        .collection-card {
+            border-radius: 28px;
+        }
+
+            .lux-hero::before {
+                inset: 12px;
+                border-radius: 20px;
+            }
+
+        .hero-copy {
+            padding: 48px 22px 18px;
+        }
+
+        .hero-title {
+            font-size: 3.08rem;
+        }
+
+        .hero-text {
+            font-size: .96rem;
+        }
+
+        .hero-proof,
+        .lux-strip {
+            grid-template-columns: 1fr;
+        }
+
+        .cake-frame {
+            height: 430px;
+        }
+
+            .cake-frame::before {
+                inset: 14px 0 62px 0;
+            }
+
+        .cake-photo {
+            inset: 34px 0 86px;
+            border-width: 10px;
+        }
+
+        .float-price {
+            top: 8px;
+            right: 0;
+        }
+
+        .float-detail {
+            left: 0;
+            bottom: 78px;
+        }
+
+        .feature-mini {
+            right: 0;
+            width: 218px;
+        }
+
+        .showcase-section {
+            padding: 56px 0 66px;
+        }
+
+        .section-head {
+            margin-bottom: 24px;
+        }
+
+        .collection-main,
+        .collection-card {
+            min-height: 310px;
+        }
+
+        .collection-content {
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+        }
+
+            .collection-content h3 {
+                font-size: 1.72rem;
+            }
+
+        .collection-card .collection-content h3 {
+            font-size: 1.48rem;
+        }
+
+        .hero-actions,
+        .btn-lux-dark,
+        .btn-lux-light {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="home-lux">
+
+    <section class="lux-section">
+        <div class="container">
+
+            <div class="lux-hero">
+
+                <div class="hero-grid">
+
+                    <div class="hero-copy">
+
+                        <div class="eyebrow">
+                            <i class="bi bi-stars"></i>
+                            Pastelería artesanal
+                        </div>
+
+                        <h1 class="hero-title">
+                            Dulces de autor
+                            <span>para celebrar con amor</span>
+                        </h1>
+
+                        <p class="hero-text">
+                            En Vienna Bake House creamos tortas, cupcakes y postres con acabado elegante,
+                            sabor memorable y una presentación pensada para sorprender desde el primer vistazo.
+                        </p>
+
+                        <div class="hero-actions">
+                            <a asp-controller="Catalogo"
+                               asp-action="Index"
+                               class="btn-lux-dark">
+                                Ver catálogo
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+
+                            <a asp-controller="Personalizado"
+                               asp-action="Index"
+                               class="btn-lux-light">
+                                Crear pedido personalizado
+                                <i class="bi bi-magic"></i>
+                            </a>
+                        </div>
+
+                        <div class="hero-proof">
+
+                            <div class="proof-card">
+                                <strong>+120</strong>
+                                <span>Diseños personalizados</span>
+                            </div>
+
+                            <div class="proof-card">
+                                <strong>100%</strong>
+                                <span>Preparación artesanal</span>
+                            </div>
+
+                            <div class="proof-card">
+                                <strong>5★</strong>
+                                <span>Experiencia premium</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hero-art">
+
+                        <div class="cake-frame">
+
+                            <div class="cake-photo"
+                                 style="--image: url('@heroCake');">
+                            </div>
+
+                            <div class="float-card float-price">
+                                <span>Desde</span>
+                                <strong>S/. 70</strong>
+                            </div>
+
+                            <div class="float-card float-detail">
+                                <i class="bi bi-heart-fill"></i>
+
+                                <div>
+                                    <strong>Hecho con detalle</strong>
+                                    <span>Diseño + sabor</span>
+                                </div>
+                            </div>
+
+                            <div class="feature-mini">
+
+                                <div class="feature-mini-img"
+                                     style="--image: url('@pinkCake');">
+                                </div>
+
+                                <span>Favorito de temporada</span>
+                                <h4>Pink Velvet </h4>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="lux-strip">
+
+                <div class="strip-item">
+                    <i class="bi bi-gem"></i>
+                    Acabado elegante
+                </div>
+
+                <div class="strip-item">
+                    <i class="bi bi-flower1"></i>
+                    Decoración delicada
+                </div>
+
+                <div class="strip-item">
+                    <i class="bi bi-bag-heart"></i>
+                    Pedido online
+                </div>
+
+                <div class="strip-item">
+                    <i class="bi bi-stars"></i>
+                    Diseño personalizado
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="showcase-section">
+        <div class="container">
+
+            <div class="section-head">
+
+                <div class="section-kicker">
+                    Colecciones de autor
+                </div>
+
+                <h2 class="section-title">
+                    Una vitrina pensada para <span>antojar</span>
+                </h2>
+
+                <p class="section-text">
+                    Elige entre tortas, cupcakes y postres diseñados para verse finos,
+                    regalarse bonito y convertir una celebración en algo especial.
+                </p>
+
+            </div>
+
+            <div class="collection-grid">
+
+                <div class="collection-main"
+                     style="--image: url('@heroCake');">
+
+                    <div class="collection-content">
+
+                        <div class="tag">Signature Cakes</div>
+
+                        <h3>Tortas premium</h3>
+
+                        <p>
+                            Diseños finos con colores suaves, detalles delicados y una presencia elegante.
+                        </p>
+
+                        <a asp-controller="Catalogo"
+                           asp-action="Index">
+                            Ver colección <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="collection-side">
+
+                    <div class="collection-card"
+                         style="--image: url('@cupcakes');">
+
+                        <div class="collection-content">
+
+                            <div class="tag">Mini Delights</div>
+
+                            <h3>Cupcakes premium</h3>
+
+                            <p>
+                                Pequeños detalles dulces para mesas especiales.
+                            </p>
+
+                            <a asp-controller="Catalogo"
+                               asp-action="Index">
+                                Ver más <i class="bi bi-arrow-right"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="collection-card"
+                         style="--image: url('@desserts');">
+
+                        <div class="collection-content">
+
+                            <div class="tag">Dessert Bar</div>
+
+                            <h3>Postres de autor</h3>
+
+                            <p>
+                                Texturas suaves, sabores finos y presentación premium.
+                            </p>
+
+                            <a asp-controller="Catalogo"
+                               asp-action="Index">
+                                Ver más <i class="bi bi-arrow-right"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,1051 @@
+﻿<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Vienna Bake House</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600;6..96,700&family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&display=swap"
+          rel="stylesheet" />
+
+    <style>
+        :root {
+            --rosa: #A74669;
+            --rosa-hover: #85324F;
+            --rosa-suave: #FFF4F7;
+            --marron: #2B2020;
+            --marron-suave: #5B4848;
+            --dorado: #8A642F;
+            --gris: #665B5B;
+            --borde: #D9C3C8;
+            --fondo: #FFF9FA;
+            --blanco: #FFFFFF;
+            --foco-accesible: #005A8D;
+            --fondo-foco: rgba(0, 90, 141, .16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at 15% 20%, rgba(239, 168, 184, .16), transparent 30%), radial-gradient(circle at 85% 80%, rgba(185, 138, 90, .10), transparent 32%), linear-gradient(135deg, #FFF9FA, #FFFFFF);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--marron);
+        }
+
+        .navbar-patissier {
+            background: rgba(255, 255, 255, .88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(241, 215, 222, .75);
+            box-shadow: 0 8px 28px rgba(59, 36, 36, .05);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Bodoni Moda', serif;
+            color: var(--marron);
+            text-decoration: none;
+            line-height: .88;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: .3s ease;
+        }
+
+            .logo span {
+                display: block;
+                font-size: 2.15rem;
+                font-weight: 700;
+                letter-spacing: 1.7px;
+                text-transform: uppercase;
+            }
+
+            .logo small {
+                display: block;
+                font-family: 'DM Sans', sans-serif;
+                font-size: .62rem;
+                font-weight: 800;
+                letter-spacing: 4px;
+                color: var(--dorado);
+                margin-top: 7px;
+                text-transform: uppercase;
+            }
+
+            .logo:hover {
+                color: var(--marron);
+                transform: translateY(-1px);
+            }
+
+                .logo:hover small {
+                    color: var(--rosa-hover);
+                }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .menu a {
+                position: relative;
+                text-decoration: none;
+                color: var(--marron-suave);
+                margin: 0 10px;
+                font-weight: 600;
+                font-size: .95rem;
+                transition: .3s ease;
+                padding: 8px 4px;
+            }
+
+                .menu a::after {
+                    content: "";
+                    position: absolute;
+                    left: 4px;
+                    right: 4px;
+                    bottom: 2px;
+                    height: 2px;
+                    background: var(--dorado);
+                    transform: scaleX(0);
+                    transform-origin: center;
+                    transition: .3s ease;
+                    border-radius: 50px;
+                }
+
+                .menu a:hover {
+                    color: var(--marron);
+                }
+
+                    .menu a:hover::after {
+                        transform: scaleX(1);
+                    }
+
+        .search-box {
+            position: relative;
+            width: 230px;
+        }
+
+            .search-box i {
+                position: absolute;
+                top: 50%;
+                left: 16px;
+                transform: translateY(-50%);
+                color: var(--dorado);
+                font-size: .95rem;
+            }
+
+            .search-box input {
+                border-radius: 50px;
+                border: 1px solid var(--borde);
+                padding: 10px 16px 10px 42px;
+                font-size: .9rem;
+                background: #FFFDFD;
+                transition: .25s ease;
+            }
+
+                .search-box input:focus {
+                    background: white;
+                    border-color: var(--rosa);
+                    box-shadow: 0 0 0 .2rem rgba(239, 168, 184, .18);
+                    outline: none;
+                }
+
+        .icono {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--marron);
+            font-size: 1.22rem;
+            margin-left: 10px;
+            transition: .3s ease;
+            text-decoration: none;
+            background: transparent;
+        }
+
+            .icono:hover {
+                color: white;
+                background: var(--rosa);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 22px rgba(220, 143, 162, .28);
+            }
+
+        .navbar-toggler {
+            border: 1px solid var(--borde);
+            border-radius: 14px;
+            padding: 8px 10px;
+        }
+
+            .navbar-toggler:focus {
+                box-shadow: 0 0 0 .2rem rgba(239, 168, 184, .18);
+            }
+
+        .mobile-menu {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--borde);
+        }
+
+            .mobile-menu a {
+                display: block;
+                text-decoration: none;
+                color: var(--marron-suave);
+                font-weight: 600;
+                padding: 10px 0;
+            }
+
+                .mobile-menu a:hover {
+                    color: var(--rosa-hover);
+                }
+
+        main {
+            min-height: 80vh;
+        }
+
+
+        footer {
+            margin-top: 100px;
+            background: rgba(255, 255, 255, .9);
+            border-top: 1px solid rgba(241, 215, 222, .8);
+            padding: 58px 0 45px;
+        }
+
+        .footer-logo {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 2.35rem;
+            color: var(--marron);
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .footer-script {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.35rem;
+            color: rgba(185, 138, 90, .68);
+            margin-top: 2px;
+        }
+
+        .footer-text {
+            color: var(--gris);
+            font-size: .95rem;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+        }
+
+            .footer-social a {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--marron);
+                font-size: 1.25rem;
+                transition: .3s ease;
+                background: var(--rosa-suave);
+                text-decoration: none;
+            }
+
+                .footer-social a:hover {
+                    color: white;
+                    background: var(--rosa);
+                    transform: translateY(-3px);
+                    box-shadow: 0 12px 24px rgba(220, 143, 162, .30);
+                }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--foco-accesible);
+            outline-offset: 3px;
+        }
+
+        .menu a:focus-visible,
+        .mobile-menu a:focus-visible,
+        .icono:focus-visible,
+        .footer-social a:focus-visible {
+            border-radius: 10px;
+        }
+
+        .search-box input:focus-visible {
+            border-color: var(--foco-accesible);
+            box-shadow: 0 0 0 .2rem var(--fondo-foco);
+        }
+
+        .voice-access-button {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 2000;
+            min-width: 58px;
+            height: 58px;
+            padding: 0 18px;
+            border: 2px solid var(--marron);
+            border-radius: 999px;
+            background: var(--marron);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(43, 32, 32, .22);
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+            .voice-access-button i {
+                font-size: 1.25rem;
+            }
+
+            .voice-access-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 16px 34px rgba(43, 32, 32, .28);
+            }
+
+            .voice-access-button:focus-visible {
+                outline: 3px solid var(--foco-accesible);
+                outline-offset: 4px;
+            }
+
+            .voice-access-button.is-listening {
+                background: #FFFFFF;
+                color: var(--marron);
+                border: 3px solid var(--foco-accesible);
+            }
+
+                .voice-access-button.is-listening::after {
+                    content: "";
+                    position: absolute;
+                    inset: -7px;
+                    border: 2px solid var(--foco-accesible);
+                    border-radius: inherit;
+                    animation: voicePulse 1.4s infinite;
+                }
+
+        .voice-status {
+            position: fixed;
+            right: 24px;
+            bottom: 94px;
+            z-index: 1999;
+            width: min(330px, calc(100vw - 40px));
+            background: #FFFFFF;
+            color: var(--marron);
+            border: 2px solid rgba(43, 32, 32, .22);
+            border-radius: 18px;
+            padding: 14px 16px;
+            box-shadow: 0 16px 38px rgba(43, 32, 32, .14);
+            display: none;
+        }
+
+            .voice-status.show {
+                display: block;
+            }
+
+            .voice-status strong {
+                display: block;
+                font-size: .9rem;
+                margin-bottom: 4px;
+            }
+
+            .voice-status span {
+                display: block;
+                font-size: .82rem;
+                line-height: 1.45;
+                color: var(--marron-suave);
+            }
+
+        .voice-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 12px;
+        }
+
+        .voice-control {
+            background: var(--rosa-suave);
+            color: var(--marron);
+            border: 1px solid var(--borde);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font: inherit;
+            font-size: .8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+            .voice-control:hover {
+                background: var(--rosa);
+                color: #fff;
+            }
+
+        .voice-help {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--borde);
+            font-size: .78rem;
+            color: var(--marron-suave);
+        }
+
+        @@keyframes voicePulse {
+            0% {
+                opacity: .8;
+                transform: scale(.96);
+            }
+
+            70% {
+                opacity: 0;
+                transform: scale(1.18);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.18);
+            }
+        }
+
+        /* Mayor contraste solicitado por el sistema */
+        @@media (prefers-contrast: more) {
+            :root {
+                --marron: #111111;
+                --marron-suave: #332A2A;
+                --gris: #403838;
+                --rosa: #7F294B;
+                --rosa-hover: #651E3A;
+                --dorado: #6D4B19;
+                --borde: #7A6D70;
+            }
+
+            .navbar-patissier,
+            footer,
+            .search-box input,
+            .voice-status {
+                border-color: var(--borde);
+            }
+
+            .voice-access-button {
+                border-width: 3px;
+            }
+        }
+
+        /* Alto contraste de Windows */
+        @@media (forced-colors: active) {
+            .voice-access-button,
+            .navbar-toggler,
+            .search-box input {
+                border: 1px solid CanvasText;
+            }
+
+            a:focus-visible,
+            button:focus-visible,
+            input:focus-visible {
+                outline: 3px solid Highlight;
+            }
+        }
+
+        /* Menos movimiento */
+        @@media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+        @@media (max-width: 991px) {
+            .navbar-patissier {
+                padding: 14px 0;
+            }
+
+            .logo span {
+                font-size: 1.82rem;
+            }
+
+            .logo small {
+                font-size: .56rem;
+                letter-spacing: 3.2px;
+            }
+
+            .search-box {
+                width: 100%;
+                margin: 15px 0 5px;
+            }
+
+            .icono {
+                margin-left: 6px;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .logo span {
+                font-size: 1.55rem;
+                letter-spacing: 1.2px;
+            }
+
+            .logo small {
+                font-size: .5rem;
+                letter-spacing: 2.7px;
+                margin-top: 6px;
+            }
+
+            footer {
+                margin-top: 70px;
+                padding: 45px 20px 35px;
+            }
+
+            .footer-logo {
+                font-size: 1.9rem;
+            }
+
+            .footer-script {
+                font-size: 2rem;
+            }
+
+
+            .voice-access-button {
+                right: 16px;
+                bottom: 16px;
+                min-width: 54px;
+                height: 54px;
+                padding: 0 15px;
+            }
+
+            .voice-button-text {
+                display: none;
+            }
+
+            .voice-status {
+                right: 16px;
+                bottom: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <nav class="navbar navbar-expand-lg navbar-patissier">
+
+        <div class="container">
+
+            <!-- LOGO -->
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="logo"
+               aria-label="Vienna Bake House - Ir al inicio">
+                <span>Vienna</span>
+                <small>Bake House</small>
+            </a>
+
+
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarPatissier"
+                    aria-controls="navbarPatissier"
+                    aria-expanded="false"
+                    aria-label="Abrir menú">
+
+                <i class="bi bi-list" aria-hidden="true"></i>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarPatissier">
+
+
+                <div class="menu mx-auto d-none d-lg-flex">
+
+                    <a asp-controller="Home"
+                       asp-action="Index">
+                        Inicio
+                    </a>
+
+                    <a asp-controller="Catalogo"
+                       asp-action="Index">
+                        Catálogo
+                    </a>
+
+                    <a asp-controller="Personalizado"
+                       asp-action="Index">
+                        Personalizados
+                    </a>
+
+                    <a asp-controller="Seguimiento"
+                       asp-action="Index">
+                        Seguimiento
+                    </a>
+
+                </div>
+
+
+
+                <div class="mobile-menu d-lg-none">
+
+                    <a asp-controller="Home"
+                       asp-action="Index">
+                        Inicio
+                    </a>
+
+                    <a asp-controller="Catalogo"
+                       asp-action="Index">
+                        Catálogo
+                    </a>
+
+                    <a asp-controller="Personalizado"
+                       asp-action="Index">
+                        Personalizados
+                    </a>
+
+                    <a asp-controller="Seguimiento"
+                       asp-action="Index">
+                        Seguimiento
+                    </a>
+
+                </div>
+
+                <!-- DERECHA -->
+
+                <div class="d-flex align-items-center ms-lg-auto mt-3 mt-lg-0">
+
+                    <div class="search-box d-none d-md-block">
+
+                        <i class="bi bi-search" aria-hidden="true"></i>
+
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Buscar postres..."
+                               aria-label="Buscar postres" />
+
+                    </div>
+
+                    <a asp-controller="Login"
+                       asp-action="Index"
+                       class="icono"
+                       title="Mi cuenta"
+                       aria-label="Mi cuenta">
+
+                        <i class="bi bi-person" aria-hidden="true"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="icono"
+                       title="Favoritos"
+                       aria-label="Favoritos">
+
+                        <i class="bi bi-heart" aria-hidden="true"></i>
+
+                    </a>
+
+                    <a asp-controller="Pedido"
+                       asp-action="Index"
+                       class="icono"
+                       title="Ver mi carrito"
+                       aria-label="Ver carrito de compras">
+                        <i class="bi bi-bag"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- CONTENIDO -->
+
+    <main role="main">
+
+        @RenderBody()
+
+    </main>
+
+
+    <!-- ACCESIBILIDAD POR VOZ -->
+    <button type="button"
+            id="btnVoice"
+            class="voice-access-button"
+            aria-label="Activar comandos por voz"
+            aria-pressed="false"
+            title="Activar comandos por voz">
+
+        <i class="bi bi-mic-fill" aria-hidden="true"></i>
+
+        <span class="voice-button-text">
+            Voz
+        </span>
+
+    </button>
+
+    <div id="voiceStatus"
+         class="voice-status"
+         role="status"
+         aria-live="polite"
+         aria-atomic="true">
+
+        <strong id="voiceStatusTitle">
+            Comandos por voz
+        </strong>
+
+        <span id="voiceStatusText">
+            Presiona el micrófono para comenzar.
+        </span>
+
+        <div class="voice-controls" aria-label="Controles de lectura">
+            <button type="button" id="btnReadPage" class="voice-control">Leer</button>
+            <button type="button" id="btnPauseRead" class="voice-control">Pausar</button>
+            <button type="button" id="btnStopRead" class="voice-control">Detener</button>
+        </div>
+
+        <div class="voice-help">
+            Puedes decir: “Inicio”, “Catálogo”, “Bajar”,
+            “Subir”, “Leer página” o “Ayuda”.
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="container text-center">
+
+            <div class="footer-logo">
+                Vienna Bake House
+            </div>
+
+            <div class="footer-script">
+                Maison de douceur
+            </div>
+
+            <p class="footer-text mt-3">
+                Tortas artesanales · Cupcakes · Postres · Diseños personalizados
+            </p>
+
+            <div class="footer-social mt-4">
+
+                <a href="#"
+                   title="Facebook"
+                   aria-label="Facebook">
+                    <i class="bi bi-facebook" aria-hidden="true"></i>
+                </a>
+
+                <a href="#"
+                   title="Instagram"
+                   aria-label="Instagram">
+                    <i class="bi bi-instagram" aria-hidden="true"></i>
+                </a>
+
+                <a href="#"
+                   title="WhatsApp"
+                   aria-label="WhatsApp">
+                    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                </a>
+
+            </div>
+
+            <p class="footer-text mt-4 mb-0">
+                © 2026 Vienna Bake House · Todos los derechos reservados
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const btnVoice = document.getElementById("btnVoice");
+            const panel = document.getElementById("voiceStatus");
+            const title = document.getElementById("voiceStatusTitle");
+            const info = document.getElementById("voiceStatusText");
+            const btnRead = document.getElementById("btnReadPage");
+            const btnPause = document.getElementById("btnPauseRead");
+            const btnStop = document.getElementById("btnStopRead");
+            if (!btnVoice || !panel || !title || !info) return;
+
+            const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const speechAvailable = "speechSynthesis" in window;
+            const synth = speechAvailable ? window.speechSynthesis : null;
+            let recognition = null;
+            let listening = false;
+            let recognitionActive = false;
+            let reading = false;
+            let currentUtterance = null;
+            let speechChunks = [];
+            let chunkIndex = 0;
+            let speechGeneration = 0;
+
+            function status(head, message) {
+                title.textContent = head;
+                info.textContent = message;
+                panel.classList.add("show");
+            }
+            function normalize(value) {
+                return (value || "").toLowerCase().normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "").trim();
+            }
+            function setMicButton(active) {
+                btnVoice.classList.toggle("is-listening", active);
+                btnVoice.setAttribute("aria-pressed", active ? "true" : "false");
+                btnVoice.setAttribute("aria-label", active ? "Desactivar comandos por voz" : "Activar comandos por voz");
+                const icon = btnVoice.querySelector("i");
+                const text = btnVoice.querySelector(".voice-button-text");
+                if (icon) icon.className = active ? "bi bi-soundwave" : "bi bi-mic-fill";
+                if (text) text.textContent = active ? "Escuchando" : "Voz";
+            }
+            function pauseRecognition() {
+                if (recognition && recognitionActive) {
+                    try { recognition.abort(); } catch (_) { }
+                }
+            }
+            function cancelReading(showMessage = true) {
+                reading = false;
+                speechGeneration++;
+                currentUtterance = null;
+                speechChunks = [];
+                chunkIndex = 0;
+                if (synth) synth.cancel();
+                if (btnPause) btnPause.textContent = "Pausar";
+                if (showMessage) status("Lectura detenida", "La lectura se ha detenido.");
+                if (listening && !recognitionActive) startRecognition();
+            }
+            
+            function splitText(text) {
+                const sentences = text.match(/[^.!?]+[.!?]*\s*/g) || [text];
+                const blocks = [];
+                let block = "";
+                sentences.forEach(sentence => {
+                    if ((block + sentence).length > 180 && block) {
+                        blocks.push(block.trim());
+                        block = "";
+                    }
+                    while (sentence.length > 180) {
+                        blocks.push(sentence.slice(0, 180).trim());
+                        sentence = sentence.slice(180);
+                    }
+                    block += sentence;
+                });
+                if (block.trim()) blocks.push(block.trim());
+                return blocks.filter(Boolean);
+            }
+            function speakNext(generation) {
+                if (!reading || generation !== speechGeneration) return;
+                if (chunkIndex >= speechChunks.length) {
+                    reading = false;
+                    currentUtterance = null;
+                    status("Lectura terminada", "Se terminó de leer el contenido.");
+                    if (listening) startRecognition();
+                    return;
+                }
+                const utterance = new SpeechSynthesisUtterance(speechChunks[chunkIndex++]);
+                currentUtterance = utterance;
+                utterance.lang = "es-PE";
+                utterance.rate = 0.95;
+                utterance.onend = () => speakNext(generation);
+                utterance.onerror = e => {
+                    if (generation !== speechGeneration) return;
+                    reading = false;
+                    if (e.error !== "canceled" && e.error !== "interrupted") {
+                        status("Error al leer", "El navegador interrumpió la lectura.");
+                    }
+                    if (listening) startRecognition();
+                };
+                synth.speak(utterance);
+            }
+            function readPage() {
+                if (!speechAvailable) {
+                    status("No disponible", "El navegador no permite lectura por voz.");
+                    return;
+                }
+                const main = document.querySelector("main");
+                const text = (main ? main.innerText : "").replace(/\s+/g, " ").trim();
+                if (!text) {
+                    status("Sin texto", "Esta página no tiene contenido para leer.");
+                    return;
+                }
+                cancelReading(false);
+                pauseRecognition(); 
+                reading = true;
+                speechChunks = splitText(text);
+                chunkIndex = 0;
+                const generation = speechGeneration;
+                status("Leyendo página", "Usa Pausar o Detener para controlar la lectura.");
+                speakNext(generation);
+            }
+            function togglePause() {
+                if (!synth || !reading) return;
+                if (synth.paused) {
+                    synth.resume();
+                    if (btnPause) btnPause.textContent = "Pausar";
+                    status("Lectura activa", "La lectura continúa.");
+                } else {
+                    synth.pause();
+                    if (btnPause) btnPause.textContent = "Continuar";
+                    status("Lectura pausada", "Pulsa Continuar o Detener.");
+                }
+            }
+            function stopRecognition() {
+                listening = false;
+                setMicButton(false);
+                if (recognition) {
+                    try { recognition.abort(); } catch (_) { }
+                }
+            }
+            function startRecognition() {
+                if (!listening || reading || recognitionActive || !recognition) return;
+                try { recognition.start(); }
+                catch (error) { console.debug("No se pudo iniciar micrófono", error); }
+            }
+            function navigate(controllerText) {
+                const links = Array.from(document.querySelectorAll("nav a"));
+                const link = links.find(a => normalize(a.textContent) === controllerText ||
+                    normalize(a.getAttribute("aria-label")).includes(controllerText) ||
+                    normalize(a.getAttribute("title")).includes(controllerText));
+                if (link) { link.click(); return true; }
+                return false;
+            }
+            function command(raw) {
+                const c = normalize(raw);
+                if (c.includes("detener lectura") || c.includes("parar lectura")) {
+                    cancelReading(); return;
+                }
+                if (c === "leer" || c.includes("leer pagina")) { readPage(); return; }
+                if (c === "inicio" || c.includes("ir al inicio")) { navigate("inicio"); return; }
+                if (c.includes("catalogo")) { navigate("catalogo"); return; }
+                if (c.includes("personalizados")) { navigate("personalizados"); return; }
+                if (c.includes("seguimiento")) { navigate("seguimiento"); return; }
+                if (c.includes("carrito")) { navigate("ver carrito"); return; }
+                if (c.includes("mi cuenta") || c.includes("iniciar sesion")) { navigate("mi cuenta"); return; }
+                if (c.includes("ver productos")) {
+                    const products = document.getElementById("productos");
+                    if (products) products.scrollIntoView({ behavior: "smooth" });
+                    else navigate("catalogo");
+                    return;
+                }
+                if (c === "bajar" || c.includes("baja")) {
+                    window.scrollBy({ top: window.innerHeight * 0.75, behavior: "smooth" }); return;
+                }
+                if (c === "subir" || c.includes("sube")) {
+                    window.scrollBy({ top: -window.innerHeight * 0.75, behavior: "smooth" }); return;
+                }
+                if (c.includes("ir arriba")) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+                if (c.includes("ir abajo")) {
+                    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" }); return;
+                }
+                if (c.includes("desactivar voz") || c.includes("dejar de escuchar")) {
+                    stopRecognition(); status("Micrófono desactivado", "Comandos por voz detenidos."); return;
+                }
+                if (c === "ayuda" || c.includes("comandos")) {
+                    status("Comandos disponibles", "Inicio, Catálogo, Personalizados, Seguimiento, Carrito, Mi cuenta, Leer página, Subir, Bajar, Desactivar voz.");
+                    return;
+                }
+                status("Comando no reconocido", "Di Ayuda para conocer los comandos.");
+            }
+            function enableRecognition() {
+                panel.classList.add("show");
+                if (!Recognition) {
+                    status("No disponible", "El reconocimiento de voz requiere un navegador compatible y HTTPS o localhost.");
+                    return;
+                }
+                if (!recognition) {
+                    recognition = new Recognition();
+                    recognition.lang = "es-PE";
+                    recognition.continuous = true;
+                    recognition.interimResults = false;
+                    recognitionActive = false;
+                    recognition.onstart = () => { recognitionActive = true; setMicButton(true); };
+                    recognition.onresult = e => {
+                        if (reading) return;
+                        const last = e.results[e.results.length - 1];
+                        if (last && last[0]) command(last[0].transcript);
+                    };
+                    recognition.onerror = e => {
+                        if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+                            stopRecognition();
+                            status("Micrófono bloqueado", "Permite acceso al micrófono en el navegador.");
+                        } else if (e.error !== "aborted" && e.error !== "no-speech") {
+                            status("Error de micrófono", e.error);
+                        }
+                    };
+                    recognition.onend = () => {
+                        recognitionActive = false;
+                        // No se reinicia mientras la página esté hablando.
+                        if (listening && !reading) startRecognition();
+                    };
+                }
+                listening = true;
+                setMicButton(true);
+                status("Escuchando", "Di Inicio, Catálogo, Leer página o Ayuda.");
+                startRecognition();
+            }
+            btnVoice.addEventListener("click", function () {
+                panel.classList.add("show");
+                if (listening) {
+                    stopRecognition();
+                    if (reading) cancelReading();
+                    status("Voz desactivada", "Micrófono y lectura detenidos.");
+                } else {
+                    enableRecognition();
+                }
+            });
+            if (btnRead) btnRead.addEventListener("click", readPage);
+            if (btnPause) btnPause.addEventListener("click", togglePause);
+            if (btnStop) btnStop.addEventListener("click", () => cancelReading());
+            document.addEventListener("keydown", e => {
+                if (e.key === "Escape") {
+                    cancelReading(false);
+                    stopRecognition();
+                    status("Voz detenida", "Micrófono y lectura desactivados.");
+                }
+            });
+            window.addEventListener("pagehide", () => {
+                stopRecognition();
+                cancelReading(false);
+            });
+        });
+    </script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

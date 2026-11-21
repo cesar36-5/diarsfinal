@@ -1,0 +1,1003 @@
+﻿@model DiarsFinal.ViewModels.PedidoPersonalizadoVM
+
+@{
+    ViewData["Title"] = "Pedido Personalizado";
+}
+
+@if (TempData["Correcto"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3 shadow"
+         style="z-index: 1050;">
+        @TempData["Correcto"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3 shadow"
+         style="z-index: 1050;">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF6F8;
+        --rosa-2: #FBE5EB;
+        --rosa-3: #F4C9D5;
+        --rosa-4: #E8A9BA;
+        --rosa-5: #D98EA3;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #272121;
+        --marron: #6F5954;
+        --marron-claro: #9B827C;
+        --marron-muy-claro: #C8B4AE;
+        --borde: rgba(155, 130, 124, .16);
+        --borde-rosa: rgba(217, 142, 163, .26);
+        --sombra: 0 26px 60px rgba(39, 33, 33, .10);
+        --sombra-suave: 0 12px 28px rgba(39, 33, 33, .06);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 18%, rgba(244, 201, 213, .50), transparent 28%), radial-gradient(circle at 88% 78%, rgba(200, 180, 174, .18), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FFF1F5 100%);
+        color: var(--negro);
+    }
+
+    .pedido-page {
+        min-height: 88vh;
+        padding: 36px 18px 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pedido-shell {
+        width: 100%;
+        max-width: 1320px;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 100%);
+        border-radius: 34px;
+        overflow: hidden;
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.92);
+    }
+
+    .brand-side {
+        min-height: 700px;
+        padding: 48px 42px;
+        background: radial-gradient(circle at 82% 10%, rgba(255,255,255,.55), transparent 24%), linear-gradient(180deg, #FAE7ED 0%, #F8DCE5 100%);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .brand-side::before {
+            content: "";
+            position: absolute;
+            width: 310px;
+            height: 310px;
+            border-radius: 50%;
+            border: 1px solid rgba(111, 89, 84, .14);
+            right: -140px;
+            top: 34px;
+        }
+
+        .brand-side::after {
+            content: "Vienna";
+            position: absolute;
+            left: 34px;
+            bottom: 18px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.7rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-6deg);
+        }
+
+    .brand-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 360px;
+    }
+
+    .brand-kicker {
+        color: var(--marron-claro);
+        font-size: .68rem;
+        font-weight: 900;
+        letter-spacing: 2.7px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+    }
+
+    .brand-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3.55rem;
+        font-weight: 700;
+        color: var(--negro);
+        line-height: .95;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+
+        .brand-name span {
+            display: block;
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .brand-line {
+        width: 72px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--marron-muy-claro), rgba(200, 180, 174, .12));
+        margin-bottom: 26px;
+    }
+
+    .brand-side h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: var(--negro);
+        line-height: 1.05;
+        margin-bottom: 13px;
+    }
+
+    .brand-side p {
+        color: var(--marron);
+        line-height: 1.72;
+        margin-bottom: 28px;
+        font-size: .9rem;
+    }
+
+    .brand-notes {
+        display: grid;
+        gap: 12px;
+    }
+
+    .brand-note {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        border-radius: 20px;
+        background: rgba(255,255,255,.56);
+        border: 1px solid rgba(255,255,255,.74);
+        backdrop-filter: blur(8px);
+        box-shadow: var(--sombra-suave);
+    }
+
+        .brand-note i {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--blanco);
+            color: var(--rosa-5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 34px;
+            font-size: .95rem;
+        }
+
+        .brand-note strong {
+            display: block;
+            color: var(--negro);
+            font-size: .9rem;
+            margin-bottom: 3px;
+        }
+
+        .brand-note span {
+            color: var(--marron);
+            font-size: .8rem;
+            line-height: 1.5;
+        }
+
+    .form-side {
+        min-height: 700px;
+        padding: 46px 56px;
+        background: radial-gradient(circle at 100% 0%, rgba(251, 232, 238, .76), transparent 24%), linear-gradient(180deg, #FFFDFC 0%, #FFF8FA 100%);
+    }
+
+    .form-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+        margin-bottom: 26px;
+    }
+
+    .form-kicker {
+        color: var(--marron-claro);
+        font-size: .68rem;
+        font-weight: 900;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .form-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.75rem;
+        font-weight: 700;
+        color: var(--negro);
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+
+        .form-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .form-subtitle {
+        color: var(--marron);
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0;
+        font-size: .92rem;
+    }
+
+    .btn-back-home {
+        min-height: 42px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.78);
+        color: var(--marron);
+        border: 1px solid var(--borde-rosa);
+        font-weight: 900;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: .25s ease;
+        white-space: nowrap;
+        font-size: .84rem;
+    }
+
+        .btn-back-home:hover {
+            color: var(--negro);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-suave);
+        }
+
+    .section-block {
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 14px;
+    }
+
+        .section-title i {
+            width: 40px;
+            height: 40px;
+            border-radius: 15px;
+            background: var(--rosa-2);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .98rem;
+        }
+
+        .section-title h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--negro);
+            margin: 0;
+        }
+
+    .section-card {
+        background: rgba(255,255,255,.78);
+        border: 1px solid rgba(255,255,255,.88);
+        box-shadow: var(--sombra-suave);
+        border-radius: 24px;
+        padding: 22px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+
+        .form-grid.two {
+            grid-template-columns: repeat(2, 1fr);
+            margin-top: 14px;
+        }
+
+    .form-label {
+        color: var(--negro);
+        font-size: .84rem;
+        font-weight: 900;
+        margin-bottom: 7px;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        min-height: 48px;
+        border-radius: 15px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 12px 15px;
+        font-size: .9rem;
+        color: var(--marron);
+        transition: .25s ease;
+    }
+
+        .form-control::placeholder {
+            color: #B5A29D;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .20rem rgba(217, 142, 163, .14);
+            background: white;
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 84px;
+        resize: vertical;
+    }
+
+    .payment-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .payment-option {
+        position: relative;
+    }
+
+        .payment-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    .payment-box {
+        min-height: 70px;
+        border-radius: 20px;
+        border: 1px solid var(--borde-rosa);
+        background: linear-gradient(180deg, #FFFFFF, #FFF9FB);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: var(--marron);
+        font-weight: 900;
+        cursor: pointer;
+        transition: .25s ease;
+        font-size: .88rem;
+    }
+
+        .payment-box i {
+            font-size: 1.15rem;
+            color: var(--marron-claro);
+        }
+
+    .payment-option input:checked + .payment-box {
+        background: linear-gradient(135deg, var(--rosa-1), #FFFFFF);
+        border-color: var(--rosa-5);
+        color: var(--negro);
+        box-shadow: 0 12px 26px rgba(217, 142, 163, .18);
+        transform: translateY(-2px);
+    }
+
+        .payment-option input:checked + .payment-box i {
+            color: var(--rosa-5);
+        }
+
+    .nivel {
+        background: linear-gradient(135deg, #FFFFFF 0%, #FFF8FA 100%);
+        border: 1px solid var(--borde-rosa);
+        border-radius: 24px;
+        padding: 20px;
+        margin-bottom: 14px;
+        box-shadow: var(--sombra-suave);
+    }
+
+    .nivel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .nivel-title {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--negro);
+        font-weight: 900;
+        font-size: .94rem;
+    }
+
+    .nivel-number {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--rosa-5), var(--marron-claro));
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        box-shadow: 0 10px 22px rgba(217, 142, 163, .22);
+        font-size: .88rem;
+    }
+
+    .nivel-price {
+        padding: 9px 16px;
+        border-radius: 999px;
+        background: var(--rosa-1);
+        border: 1px solid var(--borde-rosa);
+        color: var(--negro);
+        font-weight: 900;
+        font-size: 1.15rem;
+        box-shadow: 0 8px 18px rgba(217, 142, 163, .12);
+        white-space: nowrap;
+    }
+
+    .precio-nivel {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--rosa-5);
+        line-height: 1;
+    }
+
+    .checkout-strip {
+        margin-top: 28px;
+        border-radius: 26px;
+        background: linear-gradient(135deg, #FFF4F7 0%, #F8E2E9 100%);
+        border: 1px solid rgba(217, 142, 163, .20);
+        box-shadow: 0 16px 34px rgba(39, 33, 33, .08);
+        padding: 16px;
+    }
+
+    .checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .checkout-box {
+        min-height: 72px;
+        border-radius: 20px;
+        background: rgba(255,255,255,.76);
+        border: 1px solid rgba(255,255,255,.86);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .checkout-box > span {
+            color: var(--marron-claro);
+            font-size: .68rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .checkout-box strong {
+            color: var(--negro);
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+            .checkout-box strong span {
+                font-size: inherit;
+                letter-spacing: normal;
+                text-transform: none;
+                margin-bottom: 0;
+                color: inherit;
+            }
+
+    .checkout-total strong {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.65rem;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--negro);
+    }
+
+        .checkout-total strong span {
+            font-size: inherit;
+            color: var(--rosa-5);
+        }
+
+    #precioTotal {
+        color: var(--rosa-5);
+    }
+
+    .btn-pay {
+        height: 52px;
+        min-width: 180px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+        padding: 0 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        font-weight: 900;
+        font-size: .9rem;
+        box-shadow: 0 14px 28px rgba(39, 33, 33, .18);
+        transition: .25s ease;
+    }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 38px rgba(39, 33, 33, .24);
+        }
+
+    .footer-note {
+        margin-top: 14px;
+        text-align: center;
+        color: var(--marron-claro);
+        font-size: .82rem;
+        line-height: 1.55;
+    }
+
+        .footer-note strong {
+            color: var(--marron);
+        }
+
+    .alert {
+        border-radius: 16px;
+        border: none;
+        padding: 14px 16px;
+        font-size: .92rem;
+        margin-bottom: 22px;
+    }
+
+    .alert-success {
+        background: #F1FFF4;
+        color: #527A58;
+    }
+
+    .alert-danger {
+        background: #FFF0F2;
+        color: #A94452;
+    }
+
+    @@media (max-width: 1100px) {
+        .brand-side {
+            min-height: auto;
+            padding: 42px 34px;
+        }
+
+        .form-side {
+            min-height: auto;
+            padding: 42px 34px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .pedido-page {
+            padding: 28px 14px;
+        }
+
+        .pedido-shell {
+            border-radius: 28px;
+        }
+
+        .brand-side,
+        .form-side {
+            padding: 34px 22px;
+        }
+
+        .brand-name {
+            font-size: 2.9rem;
+        }
+
+        .form-top {
+            flex-direction: column;
+        }
+
+        .form-title {
+            font-size: 2.25rem;
+        }
+
+        .form-grid,
+        .form-grid.two,
+        .payment-grid,
+        .checkout-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-pay,
+        .btn-back-home {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="pedido-page">
+    <div class="pedido-shell">
+        <div class="row g-0">
+
+            <div class="col-lg-4">
+                <aside class="brand-side">
+                    <div class="brand-inner">
+
+                        <div class="brand-kicker">
+                            Pastelería personalizada
+                        </div>
+
+                        <div class="brand-name">
+                            Vienna
+                            <span>Bake House</span>
+                        </div>
+
+                        <div class="brand-line"></div>
+
+                        <h2>
+                            Diseña una torta hecha para tu celebración.
+                        </h2>
+
+                        <p>
+                            Personaliza tu pedido por niveles, elige el método de pago y revisa el total
+                            antes de continuar.
+                        </p>
+
+                       
+
+                    </div>
+                </aside>
+            </div>
+
+            <div class="col-lg-8">
+                <section class="form-side">
+
+                    <div class="form-top">
+                        <div>
+                            <div class="form-kicker">
+                                Pedido personalizado
+                            </div>
+
+                            <h1 class="form-title">
+                                Diseña tu <span>pedido</span>
+                            </h1>
+
+                            <p class="form-subtitle">
+                                Completa tus datos, selecciona el método de pago y arma tu torta paso a paso.
+                            </p>
+                        </div>
+
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="btn-back-home">
+                            Inicio
+                            <i class="bi bi-house-door"></i>
+                        </a>
+                    </div>
+
+                    <form asp-action="GenerarPedido" method="post" id="formPersonalizado">
+
+                        @Html.AntiForgeryToken()
+
+                        <!-- DATOS DEL CLIENTE -->
+                        <div class="section-block">
+                            <div class="section-title">
+                                <i class="bi bi-person-heart"></i>
+                                <h3>Datos del cliente</h3>
+                            </div>
+
+                            <div class="section-card">
+                                <div class="form-grid">
+                                    <div>
+                                        <label class="form-label">Nombre</label>
+                                        <input class="form-control"
+                                               name="Nombre"
+                                               placeholder="Nombre completo"
+                                               required />
+                                    </div>
+
+                                    <div>
+                                        <label class="form-label">DNI</label>
+                                        <input class="form-control"
+                                               name="Dni"
+                                               placeholder="DNI"
+                                               required />
+                                    </div>
+
+                                    <div>
+                                        <label class="form-label">Teléfono</label>
+                                        <input class="form-control"
+                                               name="Telefono"
+                                               placeholder="Teléfono"
+                                               required />
+                                    </div>
+                                </div>
+
+                                <div class="form-grid two">
+                                    <div>
+                                        <label class="form-label">Fecha de entrega</label>
+                                        <input type="date"
+                                               class="form-control"
+                                               name="FechaEntrega"
+                                               required />
+                                    </div>
+
+                                    <div>
+                                        <label class="form-label">Comentario general</label>
+                                        <input class="form-control"
+                                               name="Comentario"
+                                               placeholder="Opcional" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MÉTODO DE PAGO -->
+                        <div class="section-block">
+                            <div class="section-title">
+                                <i class="bi bi-credit-card"></i>
+                                <h3>Método de pago</h3>
+                            </div>
+
+                            <div class="payment-grid">
+                                <label class="payment-option">
+                                    <input type="radio" name="metodoPago" value="YAPE" checked required />
+                                    <span class="payment-box">
+                                        <i class="bi bi-phone"></i>
+                                        Yape
+                                    </span>
+                                </label>
+
+                                <label class="payment-option">
+                                    <input type="radio" name="metodoPago" value="TARJETA" required />
+                                    <span class="payment-box">
+                                        <i class="bi bi-credit-card-2-front"></i>
+                                        Tarjeta
+                                    </span>
+                                </label>
+
+                                <label class="payment-option">
+                                    <input type="radio" name="metodoPago" value="EFECTIVO" required />
+                                    <span class="payment-box">
+                                        <i class="bi bi-cash-coin"></i>
+                                        Efectivo
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- PERSONALIZACIÓN -->
+                        <div class="section-block">
+                            <div class="section-title">
+                                <i class="bi bi-layers"></i>
+                                <h3>Personalización</h3>
+                            </div>
+
+                            <div id="niveles"></div>
+                        </div>
+
+                        <!-- RESUMEN FINAL -->
+                        <div class="checkout-strip">
+                            <div class="checkout-grid">
+
+                                <div class="checkout-box checkout-total">
+                                    <span>Total del pedido</span>
+                                    <strong>S/ <span id="precioTotal">0.00</span></strong>
+                                </div>
+
+                                <div class="checkout-box">
+                                    <span>Resumen</span>
+                                    <strong>
+                                        <span id="cantidadNiveles">0</span> niveles ·
+                                        <span id="metodoResumen">Yape</span>
+                                    </strong>
+                                </div>
+
+                                <button type="submit" class="btn-pay">
+                                    Pagar pedido
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <div class="footer-note">
+                        Revisa bien tus datos antes de continuar.
+                        <strong>El total se actualiza automáticamente.</strong>
+                    </div>
+
+                </section>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const bases = [
+        @for (int i = 0; i < Model.Bases.Count; i++)
+        {
+                var p = Model.Bases[i];
+
+                @:{
+                @:idProducto:@p.IdProducto,
+                @:nombre:"@p.Nombre",
+                @:precio:@p.Precio
+                @:}@(i < Model.Bases.Count - 1 ? "," : "")
+        }
+    ];
+
+    function crearNivel(posicion, productos) {
+        const contenedor = document.getElementById("niveles");
+
+        let html = `
+            <div class="nivel" data-posicion="${posicion}">
+                <div class="nivel-header">
+                    <div class="nivel-title">
+                        <span class="nivel-number">${posicion + 1}</span>
+                        Nivel ${posicion + 1}
+                    </div>
+
+                    <div class="nivel-price">
+                        S/ <span class="precio-nivel">0.00</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Selecciona producto</label>
+
+                    <select class="form-select producto">
+                        <option value="">Ninguno</option>
+        `;
+
+        productos.forEach(p => {
+            html += `
+                <option value="${p.idProducto}" data-precio="${p.precio}">
+                    ${p.nombre} - S/ ${Number(p.precio).toFixed(2)}
+                </option>
+            `;
+        });
+
+        html += `
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label">Comentario para este nivel</label>
+
+                    <textarea class="form-control comentario"
+                              placeholder="Color, decoración, mensaje o detalle especial..."></textarea>
+                </div>
+
+                <input type="hidden" name="Selecciones[${posicion}].IdProducto" class="inp-id" />
+                <input type="hidden" name="Selecciones[${posicion}].Comentario" class="inp-comentario" />
+                <input type="hidden" name="Selecciones[${posicion}].Posicion" value="${posicion}" />
+            </div>
+        `;
+
+        contenedor.insertAdjacentHTML("beforeend", html);
+        recalcularTotal();
+    }
+
+    function syncNivel(nivel) {
+        const select = nivel.querySelector(".producto");
+        const comentario = nivel.querySelector(".comentario");
+        const inpId = nivel.querySelector(".inp-id");
+        const inpComentario = nivel.querySelector(".inp-comentario");
+
+        if (inpId) {
+            inpId.value = select ? select.value : "";
+        }
+
+        if (inpComentario) {
+            inpComentario.value = comentario ? comentario.value : "";
+        }
+    }
+
+    function recalcularTotal() {
+        let total = 0;
+        let cantidad = 0;
+
+        document.querySelectorAll(".nivel").forEach(nivel => {
+            const select = nivel.querySelector(".producto");
+            const opcion = select?.selectedOptions[0];
+            const precioNivel = nivel.querySelector(".precio-nivel");
+
+            let precio = 0;
+
+            if (opcion && opcion.dataset.precio) {
+                precio = parseFloat(opcion.dataset.precio);
+
+                if (select.value !== "") {
+                    total += precio;
+                    cantidad++;
+                }
+            }
+
+            if (precioNivel) {
+                precioNivel.innerText = precio.toFixed(2);
+            }
+
+            syncNivel(nivel);
+        });
+
+        document.getElementById("precioTotal").innerText = total.toFixed(2);
+        document.getElementById("cantidadNiveles").innerText = cantidad;
+    }
+
+    function actualizarMetodoResumen() {
+        const metodo = document.querySelector('input[name="metodoPago"]:checked')?.value ?? "YAPE";
+        const texto = metodo === "YAPE" ? "Yape" : metodo === "TARJETA" ? "Tarjeta" : "Efectivo";
+        document.getElementById("metodoResumen").innerText = texto;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        crearNivel(0, bases);
+        actualizarMetodoResumen();
+    });
+
+    document.addEventListener("input", function (e) {
+        if (e.target.classList.contains("comentario")) {
+            const nivel = e.target.closest(".nivel");
+            syncNivel(nivel);
+        }
+    });
+
+    document.addEventListener("change", async function (e) {
+        if (e.target.name === "metodoPago") {
+            actualizarMetodoResumen();
+            return;
+        }
+
+        if (!e.target.classList.contains("producto")) {
+            return;
+        }
+
+        const select = e.target;
+        const nivel = select.closest(".nivel");
+        const posicion = parseInt(nivel.dataset.posicion);
+
+        syncNivel(nivel);
+
+        document.querySelectorAll(".nivel").forEach(n => {
+            if (parseInt(n.dataset.posicion) > posicion) {
+                n.remove();
+            }
+        });
+
+        recalcularTotal();
+
+        if (select.value === "") {
+            return;
+        }
+
+        const response = await fetch('/Personalizado/ObtenerCompatibles?idProducto=' + select.value);
+        const compatibles = await response.json();
+
+        if (compatibles.length > 0) {
+            crearNivel(posicion + 1, compatibles);
+        }
+
+        recalcularTotal();
+    });
+</script>

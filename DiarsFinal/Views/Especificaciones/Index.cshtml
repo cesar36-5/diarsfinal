@@ -1,0 +1,641 @@
+﻿
+@model List<Especificacione>
+
+@{
+    ViewData["Title"] = "Especificaciones";
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF6F8;
+        --rosa-2: #FBE5EB;
+        --rosa-3: #F4C9D5;
+        --rosa-4: #E8A9BA;
+        --rosa-5: #D98EA3;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #272121;
+        --marron: #6F5954;
+        --marron-claro: #9B827C;
+        --marron-muy-claro: #C8B4AE;
+        --borde: rgba(155, 130, 124, .16);
+        --borde-rosa: rgba(217, 142, 163, .26);
+        --sombra: 0 28px 70px rgba(39, 33, 33, .10);
+        --sombra-suave: 0 14px 34px rgba(39, 33, 33, .06);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 16%, rgba(244, 201, 213, .55), transparent 30%), radial-gradient(circle at 88% 78%, rgba(200, 180, 174, .20), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FFF1F5 100%);
+        color: var(--negro);
+    }
+
+    .spec-page {
+        min-height: 88vh;
+        padding: 52px 0 82px;
+        display: flex;
+        align-items: center;
+    }
+
+    .spec-shell {
+        width: 100%;
+        max-width: 1120px;
+        margin: 0 auto;
+        border-radius: 40px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.92);
+    }
+
+    .spec-layout {
+        display: grid;
+        grid-template-columns: 38% 62%;
+        min-height: 650px;
+    }
+
+    .spec-brand {
+        position: relative;
+        overflow: hidden;
+        padding: 64px 50px;
+        background: radial-gradient(circle at 78% 14%, rgba(255,255,255,.48), transparent 25%), radial-gradient(circle at 18% 86%, rgba(255,255,255,.32), transparent 26%), linear-gradient(180deg, #FAE7ED 0%, #F5D5DF 100%);
+        display: flex;
+        align-items: center;
+    }
+
+        .spec-brand::before {
+            content: "";
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            border: 1px solid rgba(111, 89, 84, .16);
+            top: 48px;
+            right: -150px;
+        }
+
+        .spec-brand::after {
+            content: "Pâtissier";
+            position: absolute;
+            left: 38px;
+            bottom: 20px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 5.2rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-6deg);
+        }
+
+    .brand-content {
+        position: relative;
+        z-index: 2;
+        max-width: 390px;
+    }
+
+    .brand-kicker {
+        color: var(--marron-claro);
+        font-size: .78rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 22px;
+    }
+
+    .brand-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 4rem;
+        font-weight: 700;
+        letter-spacing: 4px;
+        line-height: .95;
+        margin-bottom: 22px;
+    }
+
+    .brand-line {
+        width: 78px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--marron-muy-claro), rgba(200, 180, 174, .12));
+        margin-bottom: 30px;
+    }
+
+    .spec-brand h2 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 2.55rem;
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 15px;
+    }
+
+    .spec-brand p {
+        color: var(--marron);
+        line-height: 1.82;
+        font-size: .96rem;
+        margin-bottom: 32px;
+    }
+
+    .brand-info {
+        display: grid;
+        gap: 14px;
+    }
+
+    .brand-info-item {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        color: var(--marron);
+        font-weight: 800;
+    }
+
+        .brand-info-item i {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.62);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--sombra-suave);
+        }
+
+    .spec-content {
+        padding: 66px 74px;
+        background: radial-gradient(circle at 100% 0%, rgba(251, 232, 238, .78), transparent 25%), linear-gradient(180deg, #FFFDFC 0%, #FFF8FA 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .content-kicker {
+        color: var(--marron-claro);
+        font-size: .78rem;
+        font-weight: 900;
+        letter-spacing: 2.8px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .content-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 3.2rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 12px;
+    }
+
+        .content-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .content-subtitle {
+        color: var(--marron);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 30px;
+    }
+
+    .spec-panel {
+        border-radius: 34px;
+        background: rgba(255,255,255,.78);
+        border: 1px solid rgba(255,255,255,.88);
+        box-shadow: var(--sombra-suave);
+        overflow: hidden;
+    }
+
+    .panel-head {
+        padding: 28px 30px 22px;
+        border-bottom: 1px solid rgba(217,142,163,.18);
+        background: linear-gradient(135deg, rgba(255,246,248,.88), rgba(255,255,255,.92));
+    }
+
+    .panel-head-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .panel-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 18px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.18rem;
+        flex: 0 0 50px;
+    }
+
+    .panel-head h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.95rem;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .panel-head p {
+        color: var(--marron-claro);
+        margin: 5px 0 0;
+        font-size: .92rem;
+    }
+
+    .panel-body-custom {
+        padding: 30px;
+    }
+
+    .form-label {
+        color: var(--negro);
+        font-size: .9rem;
+        font-weight: 900;
+        margin-bottom: 9px;
+    }
+
+    .form-select,
+    .form-control {
+        width: 100%;
+        min-height: 58px;
+        border-radius: 20px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 15px 17px;
+        font-size: .98rem;
+        color: var(--marron);
+        font-weight: 700;
+        transition: .25s ease;
+    }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .22rem rgba(217,142,163,.16);
+            background: white;
+            outline: none;
+        }
+
+    .form-group-custom {
+        margin-bottom: 22px;
+    }
+
+    .capacity-preview {
+        margin: 26px 0;
+        border-radius: 28px;
+        padding: 24px;
+        background: linear-gradient(135deg, var(--rosa-1), #FFFFFF);
+        border: 1px solid var(--borde-rosa);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 18px;
+    }
+
+        .capacity-preview span {
+            display: block;
+            color: var(--marron-claro);
+            font-size: .74rem;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .capacity-preview strong {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2.55rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+    .capacity-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--rosa-3), var(--rosa-5));
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        box-shadow: 0 14px 30px rgba(217,142,163,.22);
+    }
+
+    .btn-save {
+        width: 100%;
+        min-height: 60px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 16px 34px rgba(39, 33, 33, .18);
+        transition: .25s ease;
+    }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 42px rgba(39, 33, 33, .24);
+        }
+
+    .empty-state {
+        border-radius: 34px;
+        background: rgba(255,255,255,.80);
+        border: 1px solid rgba(255,255,255,.88);
+        box-shadow: var(--sombra-suave);
+        padding: 54px 28px;
+        text-align: center;
+        color: var(--marron);
+    }
+
+        .empty-state i {
+            font-size: 2.7rem;
+            color: var(--rosa-5);
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            line-height: 1.7;
+        }
+
+    .mini-note {
+        margin-top: 18px;
+        color: var(--marron-claro);
+        font-size: .88rem;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+        .mini-note strong {
+            color: var(--marron);
+        }
+
+    @@media (max-width: 991px) {
+        .spec-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .spec-brand {
+            padding: 50px 38px;
+        }
+
+        .spec-content {
+            padding: 54px 38px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .spec-page {
+            padding: 32px 14px 60px;
+        }
+
+        .spec-shell {
+            border-radius: 28px;
+        }
+
+        .spec-brand,
+        .spec-content {
+            padding: 40px 24px;
+        }
+
+        .brand-title {
+            font-size: 3.1rem;
+        }
+
+        .content-title {
+            font-size: 2.55rem;
+        }
+
+        .capacity-preview {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .capacity-icon {
+            margin: 0 auto;
+        }
+
+        .panel-body-custom {
+            padding: 24px;
+        }
+    }
+</style>
+
+<div class="spec-page">
+    <div class="container">
+
+        <div class="spec-shell">
+
+            <div class="spec-layout">
+
+                <aside class="spec-brand">
+
+                    <div class="brand-content">
+
+                        <div class="brand-kicker">
+                            Gestión de producción
+                        </div>
+
+                        <div class="brand-title">
+                            Vienna Bake House 
+                        </div>
+
+                        <div class="brand-line"></div>
+
+                        <h2>
+                            Controla la capacidad diaria de trabajo.
+                        </h2>
+
+                        <p>
+                            Actualiza la capacidad total según el día seleccionado para organizar mejor
+                            los pedidos y mantener una producción ordenada.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+                <section class="spec-content">
+
+                    <div class="content-kicker">
+                        Especificaciones
+                    </div>
+
+                    <h1 class="content-title">
+                        Editar <span>capacidad</span>
+                    </h1>
+
+                    <p class="content-subtitle">
+                        Selecciona un día de trabajo y modifica la capacidad total disponible.
+                    </p>
+
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        <div class="spec-panel">
+
+                            <div class="panel-head">
+                                <div class="panel-head-row">
+                                    <div class="panel-icon">
+                                        <i class="bi bi-sliders2"></i>
+                                    </div>
+
+                                    <div>
+                                        <h3>
+                                            Capacidad total
+                                        </h3>
+
+                                        <p>
+                                            Ajusta el valor según el día seleccionado.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-body-custom">
+
+                                <form asp-action="Editar" method="post">
+
+                                    <div class="form-group-custom">
+                                        <label class="form-label">
+                                            Día de trabajo
+                                        </label>
+
+                                        <select id="comboEspecificaciones"
+                                                class="form-select">
+
+                                            @foreach (var item in Model)
+                                            {
+                                                <option value="@item.IdEspecificaciones"
+                                                        data-total="@item.CapacidadTotal">
+
+                                                    @item.DiasTrabajo
+
+                                                </option>
+                                            }
+
+                                        </select>
+                                    </div>
+
+                                    <input type="hidden"
+                                           id="IdEspecificaciones"
+                                           name="IdEspecificaciones" />
+
+                                    <div class="form-group-custom">
+                                        <label class="form-label">
+                                            Capacidad total
+                                        </label>
+
+                                        <input type="number"
+                                               step="0.01"
+                                               id="CapacidadTotal"
+                                               name="CapacidadTotal"
+                                               class="form-control"
+                                               placeholder="Ingresa la capacidad total" />
+                                    </div>
+
+                                    <div class="capacity-preview">
+                                        <div>
+                                            <span>Capacidad seleccionada</span>
+                                            <strong id="previewCapacidad">0.00</strong>
+                                        </div>
+
+                                        <div class="capacity-icon">
+                                            <i class="bi bi-box-seam"></i>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                            class="btn-save">
+                                        Guardar cambios
+                                        <i class="bi bi-arrow-right"></i>
+                                    </button>
+
+                                </form>
+
+                                <div class="mini-note">
+                                    <strong>Nota:</strong>
+                                    al cambiar el día, el valor se carga automáticamente.
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <i class="bi bi-calendar-x"></i>
+
+                            <h3>
+                                No hay especificaciones registradas
+                            </h3>
+
+                            <p>
+                                Primero registra días de trabajo para poder editar la capacidad total.
+                            </p>
+                        </div>
+                    }
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const combo = document.getElementById("comboEspecificaciones");
+    const txtId = document.getElementById("IdEspecificaciones");
+    const txtTotal = document.getElementById("CapacidadTotal");
+    const previewCapacidad = document.getElementById("previewCapacidad");
+
+    function cargarDatos() {
+        if (!combo || !txtId || !txtTotal) {
+            return;
+        }
+
+        const option = combo.options[combo.selectedIndex];
+
+        if (!option) {
+            return;
+        }
+
+        txtId.value = option.value;
+        txtTotal.value = option.dataset.total;
+
+        if (previewCapacidad) {
+            previewCapacidad.innerText = option.dataset.total ?? "0.00";
+        }
+    }
+
+    if (combo) {
+        combo.addEventListener("change", cargarDatos);
+        cargarDatos();
+    }
+
+    if (txtTotal) {
+        txtTotal.addEventListener("input", function () {
+            if (previewCapacidad) {
+                previewCapacidad.innerText = txtTotal.value || "0.00";
+            }
+        });
+    }
+</script>

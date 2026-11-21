@@ -1,0 +1,844 @@
+﻿@using DiarsFinal.ViewModels
+@model PagoViewModel
+
+@{
+    ViewData["Title"] = "Pago del Pedido";
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF5F8;
+        --rosa-2: #F8E4EB;
+        --rosa-3: #F0C8D4;
+        --rosa-4: #E5A9BA;
+        --rosa-5: #D88EA2;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #252020;
+        --marron: #6F5954;
+        --marron-claro: #9A817A;
+        --marron-suave: #C4B0AA;
+        --borde: rgba(154, 129, 122, .16);
+        --borde-rosa: rgba(229, 169, 186, .32);
+        --sombra: 0 22px 50px rgba(37, 32, 32, .10);
+        --sombra-suave: 0 10px 24px rgba(37, 32, 32, .06);
+    }
+
+    body {
+        background: radial-gradient(circle at 14% 16%, rgba(240, 200, 212, .55), transparent 30%), radial-gradient(circle at 88% 76%, rgba(196, 176, 170, .20), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FDF1F5 100%);
+        color: var(--negro);
+    }
+
+    .payment-page {
+        min-height: 88vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 18px 58px;
+    }
+
+    .payment-shell {
+        width: 100%;
+        max-width: 1080px;
+        border-radius: 30px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.95);
+    }
+
+    .payment-layout {
+        display: grid;
+        grid-template-columns: 34% 66%;
+        min-height: 560px;
+    }
+
+    .payment-brand {
+        position: relative;
+        padding: 38px 34px;
+        background: radial-gradient(circle at 82% 12%, rgba(255,255,255,.52), transparent 24%), linear-gradient(180deg, #FAE8EE 0%, #F7DCE5 100%);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+    }
+
+        .payment-brand::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 1px solid rgba(154, 129, 122, .18);
+            right: -115px;
+            top: 34px;
+        }
+
+        .payment-brand::after {
+            content: "Vienna";
+            position: absolute;
+            left: 28px;
+            bottom: 12px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-6deg);
+        }
+
+    .brand-content {
+        position: relative;
+        z-index: 2;
+        max-width: 330px;
+    }
+
+    .brand-kicker {
+        color: var(--marron-claro);
+        font-size: .62rem;
+        font-weight: 900;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    .brand-name {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 2.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        line-height: .95;
+        margin-bottom: 14px;
+    }
+
+        .brand-name span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .brand-line {
+        width: 62px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--marron-suave), rgba(196, 176, 170, .12));
+        margin-bottom: 20px;
+    }
+
+    .payment-brand h2 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.85rem;
+        line-height: 1.05;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .payment-brand p {
+        color: var(--marron);
+        line-height: 1.55;
+        margin-bottom: 22px;
+        font-size: .84rem;
+    }
+
+    .order-mini-card {
+        background: rgba(255,255,255,.62);
+        border: 1px solid rgba(255,255,255,.78);
+        border-radius: 22px;
+        padding: 16px;
+        box-shadow: var(--sombra-suave);
+        backdrop-filter: blur(8px);
+    }
+
+    .order-mini-label {
+        color: var(--marron-claro);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: .60rem;
+        font-weight: 900;
+        margin-bottom: 5px;
+    }
+
+    .order-mini-code {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.55rem;
+        color: var(--negro);
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .order-mini-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border-top: 1px solid rgba(154, 129, 122, .14);
+        padding-top: 11px;
+        color: var(--marron);
+        font-size: .82rem;
+    }
+
+        .order-mini-row strong {
+            color: var(--rosa-5);
+            font-size: 1rem;
+        }
+
+    .payment-content {
+        padding: 38px 48px;
+        background: radial-gradient(circle at 100% 0%, rgba(248, 228, 235, .76), transparent 26%), linear-gradient(180deg, #FFFDFC 0%, #FFF8FA 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .payment-kicker {
+        color: var(--marron-claro);
+        font-size: .64rem;
+        font-weight: 900;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .payment-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.55rem;
+        line-height: 1;
+        font-weight: 700;
+        color: var(--negro);
+        margin-bottom: 8px;
+    }
+
+        .payment-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .payment-subtitle {
+        color: var(--marron);
+        line-height: 1.55;
+        max-width: 520px;
+        margin-bottom: 20px;
+        font-size: .86rem;
+    }
+
+    .total-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 14px;
+        background: linear-gradient(135deg, var(--rosa-1), #FFFFFF);
+        border: 1px solid var(--borde-rosa);
+        border-radius: 22px;
+        padding: 16px 18px;
+        margin-bottom: 20px;
+        box-shadow: var(--sombra-suave);
+    }
+
+        .total-card span {
+            display: block;
+            color: var(--marron-claro);
+            font-size: .60rem;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .total-card strong {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--rosa-5);
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+    .method-pill {
+        background: var(--blanco);
+        border: 1px solid var(--borde-rosa);
+        border-radius: 999px;
+        padding: 9px 13px;
+        color: var(--marron);
+        font-weight: 900;
+        font-size: .78rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        white-space: nowrap;
+    }
+
+    .payment-panel {
+        background: rgba(255,255,255,.78);
+        border: 1px solid rgba(255,255,255,.86);
+        border-radius: 24px;
+        padding: 22px;
+        box-shadow: var(--sombra-suave);
+    }
+
+    .panel-heading {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 18px;
+    }
+
+    .panel-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 15px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex: 0 0 40px;
+    }
+
+    .panel-heading h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.48rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .panel-heading p {
+        color: var(--marron-claro);
+        margin: 3px 0 0;
+        font-size: .78rem;
+    }
+
+    .yape-box {
+        display: grid;
+        grid-template-columns: 190px 1fr;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .qr-frame {
+        background: #FFFFFF;
+        border: 1px solid var(--borde-rosa);
+        border-radius: 22px;
+        padding: 12px;
+        box-shadow: 0 10px 24px rgba(37,32,32,.06);
+        text-align: center;
+    }
+
+        .qr-frame img {
+            width: 100%;
+            max-width: 165px;
+            border-radius: 16px;
+            display: block;
+            margin: 0 auto;
+        }
+
+    .qr-help {
+        color: var(--marron);
+        line-height: 1.55;
+        font-size: .84rem;
+    }
+
+        .qr-help strong {
+            color: var(--negro);
+        }
+
+    .instruction-list {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 7px;
+    }
+
+        .instruction-list li {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            color: var(--marron);
+        }
+
+        .instruction-list i {
+            color: var(--rosa-5);
+            margin-top: 2px;
+            font-size: .86rem;
+        }
+
+    .card-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+        .card-form-grid .full {
+            grid-column: 1 / -1;
+        }
+
+    .form-label {
+        color: var(--negro);
+        font-size: .78rem;
+        font-weight: 900;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        width: 100%;
+        min-height: 42px;
+        border-radius: 14px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 10px 13px;
+        font-size: .84rem;
+        color: var(--marron);
+        transition: .25s ease;
+    }
+
+        .form-control::placeholder {
+            color: #B5A29D;
+        }
+
+        .form-control:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .18rem rgba(229,169,186,.18);
+            background: white;
+            outline: none;
+        }
+
+    .btn-pay-card,
+    .btn-confirm-method,
+    .btn-back-payment {
+        width: 100%;
+        min-height: 46px;
+        border: none;
+        border-radius: 999px;
+        font-weight: 900;
+        font-size: .84rem;
+        margin-top: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: .25s ease;
+    }
+
+    .btn-pay-card,
+    .btn-confirm-method {
+        background: linear-gradient(135deg, var(--negro), #4D3E3B);
+        color: white;
+        box-shadow: 0 13px 26px rgba(37,32,32,.16);
+    }
+
+        .btn-pay-card:hover,
+        .btn-confirm-method:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(37,32,32,.22);
+        }
+
+    .btn-back-payment {
+        background: rgba(255,255,255,.72);
+        color: var(--marron);
+        border: 1px solid var(--borde-rosa);
+        margin-top: 10px;
+    }
+
+        .btn-back-payment:hover {
+            color: var(--negro);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-suave);
+        }
+
+    .cash-code-box {
+        text-align: center;
+        padding: 2px 0 0;
+    }
+
+    .cash-code {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 210px;
+        padding: 14px 24px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--rosa-1), #FFFFFF);
+        border: 1px dashed var(--rosa-5);
+        color: var(--negro);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        margin-bottom: 14px;
+    }
+
+    .cash-text {
+        color: var(--marron);
+        line-height: 1.55;
+        max-width: 480px;
+        margin: 0 auto;
+        font-size: .84rem;
+    }
+
+    .footer-note {
+        margin-top: 18px;
+        text-align: center;
+        color: var(--marron-claro);
+        font-size: .78rem;
+        line-height: 1.5;
+    }
+
+        .footer-note strong {
+            color: var(--marron);
+        }
+
+    @@media (max-width: 991px) {
+        .payment-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .payment-brand {
+            padding: 34px 30px;
+        }
+
+        .payment-content {
+            padding: 38px 30px;
+        }
+
+        .yape-box {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .qr-frame {
+            max-width: 220px;
+            margin: 0 auto;
+        }
+
+        .instruction-list li {
+            justify-content: center;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .payment-page {
+            padding: 26px 12px 54px;
+        }
+
+        .payment-shell {
+            border-radius: 24px;
+        }
+
+        .payment-brand,
+        .payment-content {
+            padding: 30px 20px;
+        }
+
+        .brand-name {
+            font-size: 2.35rem;
+        }
+
+        .payment-title {
+            font-size: 2.1rem;
+        }
+
+        .total-card,
+        .card-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cash-code {
+            min-width: 100%;
+            font-size: 1.7rem;
+        }
+    }
+</style>
+
+<div class="payment-page">
+
+    <div class="payment-shell">
+
+        <div class="payment-layout">
+
+            <aside class="payment-brand">
+
+                <div class="brand-content">
+
+                    <div class="brand-kicker">
+                        Pago seguro y elegante
+                    </div>
+
+                    <div class="brand-name">
+                        Vienna <span>Bake</span>
+                    </div>
+
+                    <div class="brand-line"></div>
+
+                    <h2>
+                        Estamos a un paso de preparar tu pedido.
+                    </h2>
+
+                    <p>
+                        Confirma el pago de tu pedido personalizado y continúa con una experiencia
+                        clara, delicada y premium.
+                    </p>
+
+                    <div class="order-mini-card">
+                        <div class="order-mini-label">
+                            Pedido
+                        </div>
+
+                        <div class="order-mini-code">
+                            #@Model.CodigoPedido
+                        </div>
+
+                        <div class="order-mini-row">
+                            <span>Total a pagar</span>
+                            <strong>S/. @String.Format("{0:N2}", Model.Total)</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </aside>
+
+            <section class="payment-content">
+
+                <div class="payment-kicker">
+                    Confirmación de pago
+                </div>
+
+                <h1 class="payment-title">
+                    Pago del <span>pedido</span>
+                </h1>
+
+                <p class="payment-subtitle">
+                    Revisa el monto total y completa el método seleccionado para confirmar tu pedido.
+                </p>
+
+                <div class="total-card">
+                    <div>
+                        <span>Total</span>
+                        <strong>S/. @String.Format("{0:N2}", Model.Total)</strong>
+                    </div>
+
+                    <div class="method-pill">
+                        @if (Model.Metodo == "YAPE")
+                        {
+                            <i class="bi bi-phone"></i>
+                            <span>Yape</span>
+                        }
+                        else if (Model.Metodo == "TARJETA")
+                        {
+                            <i class="bi bi-credit-card-2-front"></i>
+                            <span>Tarjeta</span>
+                        }
+                        else if (Model.Metodo == "EFECTIVO")
+                        {
+                            <i class="bi bi-cash-coin"></i>
+                            <span>Pago efectivo</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="payment-panel">
+
+                    @if (Model.Metodo == "YAPE")
+                    {
+                        <div class="panel-heading">
+                            <div class="panel-icon">
+                                <i class="bi bi-phone"></i>
+                            </div>
+
+                            <div>
+                                <h3>Pago con Yape</h3>
+                                <p>Escanea el QR y luego confirma tu pedido.</p>
+                            </div>
+                        </div>
+
+                        <div class="yape-box">
+                            <div class="qr-frame">
+                                <img src="@Model.Datos.QrUrl"
+                                     alt="Código QR de Yape" />
+                            </div>
+
+                            <div class="qr-help">
+                                <strong>Instrucciones</strong>
+
+                                <ul class="instruction-list">
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        Abre Yape desde tu celular.
+                                    </li>
+
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        Escanea el código QR mostrado.
+                                    </li>
+
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        Verifica el monto de S/. @String.Format("{0:N2}", Model.Total).
+                                    </li>
+
+                                    <li>
+                                        <i class="bi bi-check-circle"></i>
+                                        Presiona confirmar cuando hayas pagado.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <form asp-controller="Personalizado"
+                              asp-action="ConfirmarPagoYape"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="codigoPedido"
+                                   value="@Model.CodigoPedido" />
+
+                            <button type="submit"
+                                    class="btn-confirm-method">
+                                Ya pagué con Yape
+                                <i class="bi bi-check-circle"></i>
+                            </button>
+                        </form>
+                    }
+
+                    @if (Model.Metodo == "TARJETA")
+                    {
+                        <div class="panel-heading">
+                            <div class="panel-icon">
+                                <i class="bi bi-credit-card-2-front"></i>
+                            </div>
+
+                            <div>
+                                <h3>Pago con tarjeta</h3>
+                                <p>Completa los datos para simular el pago.</p>
+                            </div>
+                        </div>
+
+                        <form asp-controller="Personalizado"
+                              asp-action="ConfirmarPagoTarjeta"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="codigoPedido"
+                                   value="@Model.CodigoPedido" />
+
+                            <div class="card-form-grid">
+
+                                <div class="full">
+                                    <label class="form-label">Número de tarjeta</label>
+
+                                    <input name="numeroTarjeta"
+                                           placeholder="0000 0000 0000 0000"
+                                           class="form-control"
+                                           autocomplete="cc-number"
+                                           required />
+                                </div>
+
+                                <div class="full">
+                                    <label class="form-label">Nombre del titular</label>
+
+                                    <input name="titular"
+                                           placeholder="Nombre como aparece en la tarjeta"
+                                           class="form-control"
+                                           autocomplete="cc-name"
+                                           required />
+                                </div>
+
+                                <div>
+                                    <label class="form-label">Fecha de vencimiento</label>
+
+                                    <input name="vencimiento"
+                                           placeholder="MM/AA"
+                                           class="form-control"
+                                           autocomplete="cc-exp"
+                                           required />
+                                </div>
+
+                                <div>
+                                    <label class="form-label">CVC</label>
+
+                                    <input name="cvc"
+                                           placeholder="123"
+                                           class="form-control"
+                                           autocomplete="cc-csc"
+                                           required />
+                                </div>
+
+                            </div>
+
+                            <button class="btn-pay-card"
+                                    type="submit">
+                                Simular pago
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </form>
+                    }
+
+                    @if (Model.Metodo == "EFECTIVO")
+                    {
+                        <div class="panel-heading">
+                            <div class="panel-icon">
+                                <i class="bi bi-cash-coin"></i>
+                            </div>
+
+                            <div>
+                                <h3>Código de pago</h3>
+                                <p>Presenta este código para completar tu pago.</p>
+                            </div>
+                        </div>
+
+                        <div class="cash-code-box">
+                            <div class="cash-code">
+                                @Model.Datos.CodigoPago
+                            </div>
+
+                            <p class="cash-text">
+                                Guarda este código y úsalo para realizar el pago correspondiente
+                                al pedido <strong>#@Model.CodigoPedido</strong> por el monto de
+                                <strong>S/. @String.Format("{0:N2}", Model.Total)</strong>.
+                            </p>
+                        </div>
+
+                        <form asp-controller="Personalizado"
+                              asp-action="ConfirmarPagoEfectivo"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="codigoPedido"
+                                   value="@Model.CodigoPedido" />
+
+                            <button type="submit"
+                                    class="btn-confirm-method">
+                                Confirmar pedido en efectivo
+                                <i class="bi bi-check-circle"></i>
+                            </button>
+                        </form>
+                    }
+
+                    <a asp-controller="Personalizado"
+                       asp-action="Index"
+                       class="btn-back-payment">
+                        Volver a personalizados
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+
+                </div>
+
+                <div class="footer-note">
+                    © 2026 <strong>Vienna Bake House</strong> · Confirmación de pedido personalizado
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,414 @@
+﻿@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<style>
+    body {
+        background: radial-gradient(circle at 15% 18%, rgba(239,168,184,.20), transparent 30%), radial-gradient(circle at 85% 75%, rgba(185,138,90,.12), transparent 34%), linear-gradient(135deg, #FFF9FA, #FFFFFF);
+    }
+
+    .login-wrapper {
+        min-height: 86vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 55px 20px;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 1080px;
+        min-height: 650px;
+        background: white;
+        border-radius: 38px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(59,36,36,.15);
+        border: 1px solid rgba(255,255,255,.9);
+    }
+
+    .login-left {
+        position: relative;
+        height: 100%;
+        min-height: 650px;
+        padding: 68px 58px;
+        background: linear-gradient(145deg, #FCE5EC, #FFF5F8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+        .login-left::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(185,138,90,.28);
+            border-radius: 50%;
+            top: 55px;
+            right: -110px;
+        }
+
+    .login-kicker {
+        position: relative;
+        z-index: 2;
+        color: var(--dorado);
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+    }
+
+    .login-brand {
+        position: relative;
+        z-index: 2;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 4.5rem;
+        font-weight: 700;
+        color: var(--marron);
+        letter-spacing: 5px;
+        line-height: .95;
+        margin-bottom: 26px;
+    }
+
+    .login-line {
+        position: relative;
+        z-index: 2;
+        width: 82px;
+        height: 2px;
+        background: var(--dorado);
+        border-radius: 50px;
+        margin-bottom: 34px;
+    }
+
+    .login-left h2 {
+        position: relative;
+        z-index: 2;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.65rem;
+        font-weight: 700;
+        color: var(--marron);
+        margin-bottom: 16px;
+    }
+
+    .login-left p {
+        position: relative;
+        z-index: 2;
+        max-width: 400px;
+        color: var(--marron-suave);
+        line-height: 1.85;
+        margin-bottom: 34px;
+    }
+
+    .login-note {
+        position: relative;
+        z-index: 2;
+        padding-left: 24px;
+        max-width: 390px;
+    }
+
+        .login-note::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 2px;
+            height: 78px;
+            border-radius: 50px;
+            background: linear-gradient(to bottom, var(--dorado), rgba(185,138,90,.15));
+        }
+
+        .login-note strong {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.65rem;
+            line-height: 1.2;
+            color: var(--marron);
+            margin-bottom: 8px;
+        }
+
+        .login-note span {
+            color: var(--marron-suave);
+            font-size: .93rem;
+            line-height: 1.7;
+        }
+
+    .login-right {
+        min-height: 650px;
+        padding: 70px 74px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: white;
+    }
+
+    .form-kicker {
+        color: var(--dorado);
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 2.8px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .form-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--marron);
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        color: var(--gris);
+        margin-bottom: 34px;
+    }
+
+    .form-label {
+        color: var(--marron);
+        font-weight: 800;
+        margin-bottom: 9px;
+        font-size: .92rem;
+    }
+
+    .input-box {
+        position: relative;
+    }
+
+        .input-box i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: var(--dorado);
+            font-size: 1rem;
+        }
+
+    .form-control {
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid var(--borde);
+        padding: 15px 18px 15px 50px;
+        font-size: .96rem;
+        color: var(--marron);
+        background: #FFFDFD;
+        transition: .25s ease;
+    }
+
+        .form-control::placeholder {
+            color: #B7A7A7;
+        }
+
+        .form-control:focus {
+            background: white;
+            border-color: var(--rosa);
+            box-shadow: 0 0 0 .22rem rgba(239,168,184,.22);
+            outline: none;
+        }
+
+    .remember {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--gris);
+        margin: 8px 0 28px;
+        font-size: .9rem;
+        cursor: pointer;
+    }
+
+        .remember input {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--rosa);
+            cursor: pointer;
+        }
+
+    .btn-login {
+        width: 100%;
+        border: none;
+        background: linear-gradient(135deg, var(--rosa), var(--rosa-hover));
+        color: white;
+        padding: 16px;
+        border-radius: 18px;
+        font-weight: 800;
+        font-size: 1rem;
+        box-shadow: 0 16px 32px rgba(220,143,162,.34);
+        transition: .3s ease;
+    }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 38px rgba(220,143,162,.44);
+        }
+
+    .alert {
+        border-radius: 16px;
+        border: none;
+        padding: 14px 16px;
+        font-size: .92rem;
+        margin-bottom: 22px;
+    }
+
+    .alert-danger {
+        background: #FFF0F2;
+        color: #A94452;
+    }
+
+    .login-footer {
+        text-align: center;
+        margin-top: 28px;
+        color: #9B8888;
+        font-size: .88rem;
+    }
+
+        .login-footer strong {
+            color: var(--marron);
+        }
+
+    @@media (max-width: 991px) {
+        .login-left {
+            display: none;
+        }
+
+        .login-card {
+            max-width: 520px;
+            min-height: auto;
+        }
+
+        .login-right {
+            min-height: auto;
+            padding: 52px 34px;
+        }
+    }
+</style>
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+        <div class="row g-0">
+
+            <div class="col-lg-5">
+
+                <div class="login-left">
+
+                    <div class="login-kicker">
+                        Maison de douceur
+                    </div>
+
+                    <div class="login-brand">
+                        Vienna Bake House 
+                    </div>
+
+                    <div class="login-line"></div>
+
+                    <h2>
+                        Bienvenido
+                    </h2>
+
+                    <p>
+                        Accede a tu espacio privado para gestionar pedidos,
+                        revisar diseños y continuar creando experiencias dulces.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-7">
+
+                <div class="login-right">
+
+                    <div class="form-kicker">
+                        Acceso privado
+                    </div>
+
+                    <h1 class="form-title">
+                        Iniciar sesión
+                    </h1>
+
+                    <p class="form-subtitle">
+                        Ingresa tus credenciales para continuar.
+                    </p>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <form method="post">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Usuario
+                            </label>
+
+                            <div class="input-box">
+
+                                <i class="bi bi-person"></i>
+
+                                <input name="usuario"
+                                       class="form-control"
+                                       placeholder="Ingrese su usuario"
+                                       autocomplete="username"
+                                       required />
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Contraseña
+                            </label>
+
+                            <div class="input-box">
+
+                                <i class="bi bi-lock"></i>
+
+                                <input type="password"
+                                       name="contrasena"
+                                       class="form-control"
+                                       placeholder="Ingrese su contraseña"
+                                       autocomplete="current-password"
+                                       required />
+
+                            </div>
+
+                        </div>
+
+                        <label class="remember">
+
+                            <input type="checkbox"
+                                   name="recordarme" />
+
+                            Recordarme
+
+                        </label>
+
+                        <button type="submit"
+                                class="btn-login">
+                            Ingresar al sistema
+                        </button>
+
+                    </form>
+
+                    <div class="login-footer">
+                        © 2026 <strong>Bienna Vake House</strong> · Pastelería y gestión
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

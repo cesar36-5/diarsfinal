@@ -1,0 +1,577 @@
+﻿
+@model DiarsFinal.ViewModels.SeguimientoVM
+
+@{
+    ViewData["Title"] = "Seguimiento";
+
+    string estadoTexto = "";
+    string estadoValor = "";
+    int estadoNumero = -1;
+
+    if (Model?.Pedido != null)
+    {
+        estadoValor = Model.Pedido.Estado;
+        int.TryParse(estadoValor, out estadoNumero);
+
+        estadoTexto = Model.Pedido.Estado switch
+        {
+            "0" => "En espera",
+            "1" => "En proceso",
+            "2" => "Cancelado",
+            "3" => "En preparación",
+            "4" => "Listo para recoger",
+            "5" => "Recogido",
+            _ => "Desconocido"
+        };
+    }
+
+    int progreso = estadoValor switch
+    {
+        "0" => 15,
+        "1" => 35,
+        "3" => 60,
+        "4" => 82,
+        "5" => 100,
+        _ => 0
+    };
+}
+
+<style>
+    :root {
+        --cream: #FFF8F5;
+        --white: #FFFFFF;
+        --brown: #3F2A2A;
+        --brown-soft: #7A5C58;
+        --muted: #A28B86;
+        --pink: #E8A6B4;
+        --pink-dark: #D98798;
+        --pink-soft: #FFF0F3;
+        --gold: #B88A5A;
+        --red: #C96B6B;
+        --border: rgba(63, 42, 42, .10);
+        --shadow: 0 22px 55px rgba(63, 42, 42, .10);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 10%, rgba(232, 166, 180, .18), transparent 28%), linear-gradient(180deg, #FFF8F5 0%, #FFFFFF 55%, #FFF2F5 100%);
+    }
+
+    .tracking-page {
+        min-height: calc(100vh - 100px);
+        padding: 78px 0 90px;
+        color: var(--brown);
+    }
+
+    .tracking-wrapper {
+        max-width: 860px;
+        margin: 0 auto;
+    }
+
+    .tracking-header {
+        text-align: center;
+        margin-bottom: 34px;
+    }
+
+    .tracking-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 17px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.78);
+        border: 1px solid rgba(232,166,180,.32);
+        color: var(--gold);
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+    }
+
+    .tracking-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.4rem, 5vw, 4.3rem);
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 14px;
+        color: var(--brown);
+    }
+
+        .tracking-title span {
+            color: var(--pink-dark);
+            font-style: italic;
+        }
+
+    .tracking-description {
+        color: var(--brown-soft);
+        line-height: 1.75;
+        font-size: 1rem;
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    .tracking-card {
+        background: rgba(255,255,255,.88);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 34px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .tracking-search {
+        padding: 34px;
+        border-bottom: 1px solid var(--border);
+        background: radial-gradient(circle at 92% 0%, rgba(232,166,180,.20), transparent 28%), rgba(255,255,255,.72);
+    }
+
+    .tracking-form {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+        align-items: end;
+    }
+
+    .form-label-premium {
+        display: block;
+        color: var(--brown);
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .input-premium {
+        height: 58px;
+        background: white;
+        border: 1px solid rgba(217,137,152,.34);
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 20px;
+        transition: .25s ease;
+    }
+
+        .input-premium:focus-within {
+            border-color: var(--pink-dark);
+            box-shadow: 0 0 0 4px rgba(217,137,152,.13);
+        }
+
+        .input-premium i {
+            color: var(--gold);
+            font-size: 1.15rem;
+        }
+
+        .input-premium input {
+            border: 0;
+            outline: 0;
+            background: transparent;
+            width: 100%;
+            color: var(--brown);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+            .input-premium input::placeholder {
+                color: #B19A95;
+                font-weight: 500;
+            }
+
+    .btn-search-order {
+        height: 58px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 32px;
+        background: linear-gradient(135deg, var(--brown), #65423E);
+        color: white;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 16px 36px rgba(63,42,42,.22);
+        transition: .25s ease;
+        white-space: nowrap;
+    }
+
+        .btn-search-order:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 46px rgba(63,42,42,.28);
+        }
+
+    .tracking-alert {
+        margin: 24px 34px 0;
+        padding: 16px 18px;
+        border-radius: 20px;
+        background: #FFF0F0;
+        color: #A64D4D;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+    }
+
+    .order-result {
+        padding: 34px;
+    }
+
+    .order-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .order-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 900;
+        color: var(--brown);
+        margin-bottom: 4px;
+    }
+
+    .order-client {
+        color: var(--brown-soft);
+        margin: 0;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 11px 17px;
+        border-radius: 999px;
+        background: var(--pink-soft);
+        color: var(--brown);
+        font-weight: 900;
+        white-space: nowrap;
+    }
+
+        .status-badge.cancelled {
+            background: #FFF0F0;
+            color: var(--red);
+        }
+
+    .progress-area {
+        background: var(--cream);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        padding: 26px;
+    }
+
+    .progress-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+        .progress-head h4 {
+            color: var(--brown);
+            font-weight: 900;
+            margin: 0;
+        }
+
+    .progress-percent {
+        color: var(--pink-dark);
+        font-weight: 900;
+    }
+
+    .progress-line {
+        width: 100%;
+        height: 12px;
+        background: #F2E4E1;
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 22px;
+    }
+
+    .progress-fill {
+        width: @(progreso) %;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--pink), var(--pink-dark));
+    }
+
+        .progress-fill.cancelled {
+            width: 100%;
+            background: var(--red);
+        }
+
+    .steps-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+    }
+
+    .step-item {
+        text-align: center;
+        color: var(--muted);
+        font-size: .78rem;
+        font-weight: 800;
+    }
+
+    .step-dot {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid rgba(63,42,42,.10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        color: var(--muted);
+    }
+
+    .step-item.done {
+        color: var(--brown);
+    }
+
+        .step-item.done .step-dot {
+            background: var(--pink-dark);
+            color: white;
+            border-color: var(--pink-dark);
+        }
+
+    .cancelled-box {
+        background: #FFF0F0;
+        border: 1px solid rgba(201,107,107,.22);
+        border-radius: 24px;
+        padding: 24px;
+        color: var(--red);
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .empty-state {
+        padding: 34px;
+        text-align: center;
+        color: var(--muted);
+    }
+
+        .empty-state i {
+            font-size: 2.2rem;
+            color: var(--pink-dark);
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+    @@media (max-width: 768px) {
+        .tracking-page {
+            padding: 54px 0 70px;
+        }
+
+        .tracking-search,
+        .order-result,
+        .empty-state {
+            padding: 24px;
+        }
+
+        .tracking-form {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-search-order {
+            width: 100%;
+        }
+
+        .order-top {
+            flex-direction: column;
+        }
+
+        .steps-row {
+            grid-template-columns: 1fr;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .step-dot {
+            margin: 0;
+            flex: 0 0 auto;
+        }
+    }
+</style>
+
+<div class="tracking-page">
+    <div class="container">
+        <div class="tracking-wrapper">
+
+            <div class="tracking-header">
+                <div class="tracking-label">
+                    <i class="bi bi-truck"></i>
+                    Seguimiento
+                </div>
+
+                <h1 class="tracking-title">
+                    Revisa tu <span>pedido</span>
+                </h1>
+
+                <p class="tracking-description">
+                    Ingresa el código de tu pedido para conocer su estado actual de forma rápida y sencilla.
+                </p>
+            </div>
+
+            <div class="tracking-card">
+
+                <div class="tracking-search">
+                    <form asp-action="Buscar" method="post" class="tracking-form">
+
+                        <div>
+                            <label for="codigo" class="form-label-premium">
+                                Código del pedido
+                            </label>
+
+                            <div class="input-premium">
+                                <i class="bi bi-receipt"></i>
+
+                                <input type="number"
+                                       id="codigo"
+                                       name="codigo"
+                                       required
+                                       placeholder="Ejemplo: 1025" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-search-order">
+                            Buscar
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+
+                    </form>
+                </div>
+
+                @if (Model?.Error != null)
+                {
+                    <div class="tracking-alert">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <span>@Model.Error</span>
+                    </div>
+                }
+
+                @if (Model?.Pedido != null)
+                {
+                    bool cancelado = estadoValor == "2";
+
+                    <div class="order-result">
+
+                        <div class="order-top">
+                            <div>
+                                <div class="order-number">
+                                    Pedido #@Model.Pedido.Codigo
+                                </div>
+
+                                <p class="order-client">
+                                    Cliente: <strong>@Model.Pedido.Nombre</strong>
+                                </p>
+                            </div>
+
+                            <div class="status-badge @(cancelado ? "cancelled" : "")">
+                                @if (cancelado)
+                                {
+                                    <i class="bi bi-x-circle"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-check-circle"></i>
+                                }
+
+                                @estadoTexto
+                            </div>
+                        </div>
+
+                        @if (cancelado)
+                        {
+                            <div class="cancelled-box">
+                                <i class="bi bi-x-circle"></i>
+                                Este pedido fue cancelado y no continuará su preparación.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="progress-area">
+
+                                <div class="progress-head">
+                                    <h4>Progreso del pedido</h4>
+                                    <div class="progress-percent">@progreso%</div>
+                                </div>
+
+                                <div class="progress-line">
+                                    <div class="progress-fill"></div>
+                                </div>
+
+                                <div class="steps-row">
+
+                                    <div class="step-item @(estadoNumero >= 0 ? "done" : "")">
+                                        <div class="step-dot">
+                                            <i class="bi bi-hourglass-split"></i>
+                                        </div>
+                                        En espera
+                                    </div>
+
+                                    <div class="step-item @(estadoNumero >= 1 ? "done" : "")">
+                                        <div class="step-dot">
+                                            <i class="bi bi-clipboard-check"></i>
+                                        </div>
+                                        En proceso
+                                    </div>
+
+                                    <div class="step-item @(estadoNumero >= 3 ? "done" : "")">
+                                        <div class="step-dot">
+                                            <i class="bi bi-gift"></i>
+                                        </div>
+                                        Preparación
+                                    </div>
+
+                                    <div class="step-item @(estadoNumero >= 4 ? "done" : "")">
+                                        <div class="step-dot">
+                                            <i class="bi bi-bag-heart"></i>
+                                        </div>
+                                        Listo
+                                    </div>
+
+                                    <div class="step-item @(estadoNumero >= 5 ? "done" : "")">
+                                        <div class="step-dot">
+                                            <i class="bi bi-check2-circle"></i>
+                                        </div>
+                                        Recogido
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="bi bi-search-heart"></i>
+                        <p>
+                            Aún no has buscado ningún pedido.<br />
+                            Escribe tu código para consultar el seguimiento.
+                        </p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,757 @@
+﻿@model List<DiarsFinal.Models.Categorium>
+
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF6F8;
+        --rosa-2: #FBE5EB;
+        --rosa-3: #F4C9D5;
+        --rosa-4: #E8A9BA;
+        --rosa-5: #D98EA3;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #272121;
+        --marron: #6F5954;
+        --marron-claro: #9B827C;
+        --marron-muy-claro: #C8B4AE;
+        --borde: rgba(155, 130, 124, .16);
+        --borde-rosa: rgba(217, 142, 163, .26);
+        --sombra: 0 28px 70px rgba(39, 33, 33, .10);
+        --sombra-suave: 0 14px 34px rgba(39, 33, 33, .06);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 16%, rgba(244, 201, 213, .55), transparent 30%), radial-gradient(circle at 88% 78%, rgba(200, 180, 174, .20), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FFF1F5 100%);
+        color: var(--negro);
+    }
+
+    .category-page {
+        min-height: 88vh;
+        padding: 34px 0 62px;
+    }
+
+    .category-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 58%, #FBE5EB 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.92);
+        margin-bottom: 28px;
+    }
+
+        .category-hero::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F4C9D5, #FBE5EB);
+            right: -110px;
+            top: -115px;
+            opacity: .78;
+        }
+
+        .category-hero::after {
+            content: "Vienna";
+            position: absolute;
+            right: 38px;
+            bottom: 10px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.8rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-5deg);
+        }
+
+    .category-hero-inner {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        min-height: 220px;
+    }
+
+    .category-hero-content {
+        padding: 38px 46px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .category-kicker {
+        color: var(--marron-claro);
+        font-size: .66rem;
+        font-weight: 900;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .category-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: clamp(2.2rem, 3.5vw, 3.35rem);
+        font-weight: 700;
+        line-height: .95;
+        margin-bottom: 10px;
+    }
+
+        .category-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .category-text {
+        color: var(--marron);
+        font-size: .92rem;
+        line-height: 1.55;
+        max-width: 500px;
+        margin: 0;
+    }
+
+    .hero-actions {
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .btn-dashboard-pretty {
+        position: relative;
+        min-height: 42px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #4B3A37);
+        color: white;
+        border: 1px solid rgba(255,255,255,.55);
+        font-weight: 900;
+        padding: 0 20px;
+        font-size: .86rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        text-decoration: none;
+        overflow: hidden;
+        box-shadow: 0 12px 24px rgba(39, 33, 33, .16);
+        transition: .28s ease;
+        width: fit-content;
+    }
+
+        .btn-dashboard-pretty::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -90px;
+            width: 70px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
+            transform: skewX(-18deg);
+            transition: .55s ease;
+        }
+
+        .btn-dashboard-pretty:hover::before {
+            left: 120%;
+        }
+
+        .btn-dashboard-pretty:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(39, 33, 33, .22);
+        }
+
+        .btn-dashboard-pretty i {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.16);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .86rem;
+        }
+
+    .category-hero-side {
+        position: relative;
+        min-height: 220px;
+        background: radial-gradient(circle at 50% 38%, rgba(255,255,255,.34), transparent 28%), linear-gradient(145deg, #F8DDE5 0%, #F4C9D5 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+        .category-hero-side::before {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            border: 1px solid rgba(111, 89, 84, .16);
+            top: 24px;
+            right: -72px;
+        }
+
+    .side-badge {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 18px;
+    }
+
+        .side-badge i {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.72);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.65rem;
+            margin-bottom: 12px;
+            box-shadow: 0 14px 34px rgba(39,33,33,.10);
+        }
+
+        .side-badge strong {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .side-badge span {
+            color: var(--marron);
+            font-weight: 900;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            font-size: .64rem;
+        }
+
+    .category-layout {
+        display: grid;
+        grid-template-columns: 390px 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    .category-panel {
+        background: rgba(255,255,255,.84);
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 32px;
+        box-shadow: var(--sombra-suave);
+        overflow: hidden;
+    }
+
+    .panel-head {
+        padding: 26px 28px 20px;
+        border-bottom: 1px solid rgba(217,142,163,.18);
+        background: linear-gradient(135deg, rgba(255,246,248,.82), rgba(255,255,255,.86));
+    }
+
+    .panel-head-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .panel-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 18px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        flex: 0 0 48px;
+    }
+
+    .panel-head h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.85rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .panel-head p {
+        color: var(--marron-claro);
+        font-size: .9rem;
+        margin: 6px 0 0;
+    }
+
+    .panel-body-custom {
+        padding: 28px;
+    }
+
+    .form-label {
+        color: var(--negro);
+        font-size: .9rem;
+        font-weight: 900;
+        margin-bottom: 9px;
+    }
+
+    .form-control {
+        width: 100%;
+        min-height: 56px;
+        border-radius: 18px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 15px 17px;
+        font-size: .96rem;
+        color: var(--marron);
+        transition: .25s ease;
+    }
+
+        .form-control::placeholder {
+            color: #B5A29D;
+        }
+
+        .form-control:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .22rem rgba(217,142,163,.16);
+            background: white;
+            outline: none;
+        }
+
+    .btn-add-category {
+        width: 100%;
+        min-height: 56px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 18px;
+        box-shadow: 0 16px 34px rgba(39, 33, 33, .18);
+        transition: .25s ease;
+    }
+
+        .btn-add-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 42px rgba(39, 33, 33, .24);
+        }
+
+    .mini-help {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--rosa-1), #FFFFFF);
+        border: 1px solid var(--borde-rosa);
+        color: var(--marron);
+        line-height: 1.6;
+        font-size: .9rem;
+    }
+
+        .mini-help strong {
+            color: var(--negro);
+        }
+
+    .list-panel .panel-body-custom {
+        padding: 0;
+    }
+
+    .category-table-wrap {
+        overflow-x: auto;
+    }
+
+    .category-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .category-table thead th {
+            background: #FFF8FA;
+            color: var(--marron-claro);
+            font-size: .76rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 900;
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(217,142,163,.20);
+            white-space: nowrap;
+        }
+
+        .category-table tbody td {
+            padding: 20px 24px;
+            color: var(--marron);
+            border-bottom: 1px solid rgba(155,130,124,.10);
+            vertical-align: middle;
+        }
+
+        .category-table tbody tr {
+            transition: .22s ease;
+        }
+
+            .category-table tbody tr:hover {
+                background: rgba(255,246,248,.72);
+            }
+
+    .category-id {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 48px;
+        height: 36px;
+        border-radius: 999px;
+        background: var(--rosa-1);
+        border: 1px solid var(--borde-rosa);
+        color: var(--rosa-5);
+        font-weight: 900;
+    }
+
+    .category-name-cell {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .category-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--rosa-3), var(--rosa-5));
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 22px rgba(217,142,163,.22);
+        flex: 0 0 40px;
+    }
+
+    .category-name {
+        color: var(--negro);
+        font-weight: 900;
+    }
+
+    .category-sub {
+        color: var(--marron-claro);
+        font-size: .86rem;
+        margin-top: 2px;
+    }
+
+    .empty-state {
+        padding: 54px 26px;
+        text-align: center;
+        color: var(--marron);
+    }
+
+        .empty-state i {
+            font-size: 2.6rem;
+            color: var(--rosa-5);
+            margin-bottom: 14px;
+        }
+
+        .empty-state h4 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+    .list-count {
+        margin-left: auto;
+        background: rgba(255,255,255,.72);
+        border: 1px solid var(--borde-rosa);
+        color: var(--marron);
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-weight: 900;
+        font-size: .88rem;
+        white-space: nowrap;
+    }
+
+    @@media (max-width: 991px) {
+        .category-hero-inner {
+            grid-template-columns: 1fr;
+        }
+
+        .category-hero-side {
+            min-height: 180px;
+        }
+
+        .category-hero-content {
+            padding: 34px 30px;
+        }
+
+        .category-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .category-page {
+            padding: 28px 0 54px;
+        }
+
+        .category-hero {
+            border-radius: 24px;
+        }
+
+        .category-panel {
+            border-radius: 26px;
+        }
+
+        .category-title {
+            font-size: 2.25rem;
+        }
+
+        .category-hero-content {
+            padding: 30px 22px;
+        }
+
+        .btn-dashboard-pretty {
+            width: 100%;
+        }
+
+        .panel-head {
+            padding: 24px 22px 18px;
+        }
+
+        .panel-body-custom {
+            padding: 22px;
+        }
+
+        .panel-head-row {
+            align-items: flex-start;
+        }
+
+        .category-table thead {
+            display: none;
+        }
+
+        .category-table,
+        .category-table tbody,
+        .category-table tr,
+        .category-table td {
+            display: block;
+            width: 100%;
+        }
+
+            .category-table tbody tr {
+                padding: 18px 22px;
+                border-bottom: 1px solid rgba(155,130,124,.10);
+            }
+
+            .category-table tbody td {
+                padding: 8px 0;
+                border: none;
+            }
+    }
+</style>
+
+<div class="category-page">
+    <div class="container">
+
+        <section class="category-hero">
+            <div class="category-hero-inner">
+
+                <div class="category-hero-content">
+                    <div class="category-kicker">
+                        Gestión de catálogo
+                    </div>
+
+                    <h1 class="category-title">
+                        Categorías de <span>pastelería</span>
+                    </h1>
+
+                    <p class="category-text">
+                        Organiza tus productos por familias dulces, colecciones especiales
+                        y líneas premium para mantener tu catálogo claro y elegante.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a asp-controller="Dashboard"
+                           asp-action="Index"
+                           class="btn-dashboard-pretty">
+                            <i class="bi bi-house-heart"></i>
+                            Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category-hero-side">
+                    <div class="side-badge">
+                        <i class="bi bi-tags"></i>
+                        <strong>
+                            @(Model?.Count ?? 0)
+                        </strong>
+                        <span>Categorías registradas</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="category-layout">
+
+            <!-- FORMULARIO -->
+            <div class="category-panel">
+
+                <div class="panel-head">
+                    <div class="panel-head-row">
+                        <div class="panel-icon">
+                            <i class="bi bi-plus-circle"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Agregar categoría
+                            </h3>
+
+                            <p>
+                                Crea una nueva sección para tus productos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body-custom">
+
+                    <form asp-controller="Categorias"
+                          asp-action="Crear"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Nombre de la categoría
+                            </label>
+
+                            <input type="text"
+                                   name="Nombre"
+                                   class="form-control"
+                                   placeholder="Ej. Tortas premium"
+                                   required />
+                        </div>
+
+                        <button type="submit"
+                                class="btn-add-category">
+                            Agregar categoría
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+
+                    </form>
+
+                    <div class="mini-help">
+                        <strong>Tip:</strong>
+                        usa nombres claros como tortas, cupcakes, postres, bocaditos o colecciones especiales.
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- LISTA -->
+            <div class="category-panel list-panel">
+
+                <div class="panel-head">
+                    <div class="panel-head-row">
+                        <div class="panel-icon">
+                            <i class="bi bi-list-stars"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Lista de categorías
+                            </h3>
+
+                            <p>
+                                Categorías registradas actualmente.
+                            </p>
+                        </div>
+
+                        <div class="list-count">
+                            @(Model?.Count ?? 0) total
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body-custom">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <div class="category-table-wrap">
+                            <table class="category-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="category-id">
+                                                    #@item.IdCategoria
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <div class="category-name-cell">
+                                                    <span class="category-dot">
+                                                        <i class="bi bi-tag-heart"></i>
+                                                    </span>
+
+                                                    <div>
+                                                        <div class="category-name">
+                                                            @item.Nombre
+                                                        </div>
+
+                                                        <div class="category-sub">
+                                                            Categoría del catálogo
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <i class="bi bi-search-heart"></i>
+
+                            <h4>
+                                Aún no hay categorías
+                            </h4>
+
+                            <p>
+                                Agrega tu primera categoría para organizar el catálogo.
+                            </p>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

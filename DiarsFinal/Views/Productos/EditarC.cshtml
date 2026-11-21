@@ -1,0 +1,1159 @@
+﻿@model DiarsFinal.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Producto Compatible";
+}
+
+<style>
+    :root {
+        --rosa-1: #FFF6F8;
+        --rosa-2: #FBE5EB;
+        --rosa-3: #F4C9D5;
+        --rosa-4: #E8A9BA;
+        --rosa-5: #D98EA3;
+        --blanco: #FFFFFF;
+        --crema: #FFFDFC;
+        --negro: #272121;
+        --marron: #6F5954;
+        --marron-claro: #9B827C;
+        --marron-muy-claro: #C8B4AE;
+        --borde: rgba(155, 130, 124, .16);
+        --borde-rosa: rgba(217, 142, 163, .26);
+        --sombra: 0 26px 60px rgba(39, 33, 33, .10);
+        --sombra-suave: 0 12px 28px rgba(39, 33, 33, .06);
+    }
+
+    body {
+        background: radial-gradient(circle at 12% 16%, rgba(244, 201, 213, .45), transparent 30%), radial-gradient(circle at 88% 78%, rgba(200, 180, 174, .18), transparent 34%), linear-gradient(135deg, #FFF8FA 0%, #FFFFFF 48%, #FFF1F5 100%);
+        color: var(--negro);
+    }
+
+    .edit-product-page {
+        min-height: 88vh;
+        padding: 38px 0 64px;
+        display: flex;
+        align-items: center;
+    }
+
+    .edit-product-shell {
+        width: 100%;
+        max-width: 1140px;
+        margin: 0 auto;
+        border-radius: 34px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #FFFDFC 0%, #FFF8FA 100%);
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(255,255,255,.92);
+    }
+
+    .edit-product-layout {
+        display: grid;
+        grid-template-columns: 34% 66%;
+        min-height: 680px;
+    }
+
+    .product-brand {
+        position: relative;
+        overflow: hidden;
+        padding: 48px 42px;
+        background: radial-gradient(circle at 78% 14%, rgba(255,255,255,.46), transparent 25%), radial-gradient(circle at 18% 86%, rgba(255,255,255,.30), transparent 26%), linear-gradient(180deg, #FAE7ED 0%, #F5D5DF 100%);
+        display: flex;
+        align-items: center;
+    }
+
+        .product-brand::before {
+            content: "";
+            position: absolute;
+            width: 310px;
+            height: 310px;
+            border-radius: 50%;
+            border: 1px solid rgba(111, 89, 84, .14);
+            top: 36px;
+            right: -145px;
+        }
+
+        .product-brand::after {
+            content: "Vienna";
+            position: absolute;
+            left: 34px;
+            bottom: 18px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.6rem;
+            color: rgba(111, 89, 84, .10);
+            transform: rotate(-6deg);
+        }
+
+    .brand-content {
+        position: relative;
+        z-index: 2;
+        max-width: 330px;
+    }
+
+    .brand-kicker {
+        color: var(--marron-claro);
+        font-size: .68rem;
+        font-weight: 900;
+        letter-spacing: 2.7px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+    }
+
+    .brand-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 3.25rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        line-height: .95;
+        margin-bottom: 20px;
+    }
+
+        .brand-title span {
+            display: block;
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .brand-line {
+        width: 72px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--marron-muy-claro), rgba(200, 180, 174, .12));
+        margin-bottom: 26px;
+    }
+
+    .product-brand h2 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 2.05rem;
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 13px;
+    }
+
+    .product-brand p {
+        color: var(--marron);
+        line-height: 1.72;
+        font-size: .9rem;
+        margin-bottom: 28px;
+    }
+
+    .brand-info {
+        display: grid;
+        gap: 12px;
+    }
+
+    .brand-info-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--marron);
+        font-weight: 800;
+        font-size: .9rem;
+    }
+
+        .brand-info-item i {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.62);
+            color: var(--rosa-5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--sombra-suave);
+            flex: 0 0 34px;
+        }
+
+    .product-content {
+        padding: 44px 54px;
+        background: radial-gradient(circle at 100% 0%, rgba(251, 232, 238, .70), transparent 25%), linear-gradient(180deg, #FFFDFC 0%, #FFF8FA 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .content-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+    .content-kicker {
+        color: var(--marron-claro);
+        font-size: .68rem;
+        font-weight: 900;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .content-title {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 2.65rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+
+        .content-title span {
+            color: var(--rosa-5);
+            font-style: italic;
+        }
+
+    .content-subtitle {
+        color: var(--marron);
+        line-height: 1.65;
+        max-width: 580px;
+        margin: 0;
+        font-size: .92rem;
+    }
+
+    .btn-dashboard-mini {
+        min-height: 42px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.78);
+        color: var(--marron);
+        border: 1px solid var(--borde-rosa);
+        font-weight: 900;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: .25s ease;
+        white-space: nowrap;
+        font-size: .84rem;
+    }
+
+        .btn-dashboard-mini:hover {
+            color: var(--negro);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-suave);
+        }
+
+    .edit-panel {
+        border-radius: 28px;
+        background: rgba(255,255,255,.82);
+        border: 1px solid rgba(255,255,255,.88);
+        box-shadow: var(--sombra-suave);
+        overflow: hidden;
+        margin-bottom: 22px;
+    }
+
+    .panel-head {
+        padding: 22px 26px 18px;
+        border-bottom: 1px solid rgba(217,142,163,.18);
+        background: linear-gradient(135deg, rgba(255,246,248,.88), rgba(255,255,255,.92));
+    }
+
+    .panel-head-row {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .panel-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        flex: 0 0 44px;
+    }
+
+    .panel-head h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--negro);
+        font-size: 1.62rem;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .panel-head p {
+        color: var(--marron-claro);
+        margin: 4px 0 0;
+        font-size: .84rem;
+    }
+
+    .panel-body-custom {
+        padding: 24px 26px 26px;
+    }
+
+    .form-grid-two {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .form-label {
+        color: var(--negro);
+        font-size: .84rem;
+        font-weight: 900;
+        margin-bottom: 7px;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        min-height: 48px;
+        border-radius: 15px;
+        border: 1px solid var(--borde-rosa);
+        background: rgba(255,255,255,.94);
+        padding: 12px 15px;
+        font-size: .9rem;
+        color: var(--marron);
+        transition: .25s ease;
+    }
+
+        .form-control::placeholder {
+            color: #B5A29D;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--rosa-5);
+            box-shadow: 0 0 0 .20rem rgba(217,142,163,.14);
+            background: white;
+            outline: none;
+        }
+
+    .text-danger.small {
+        font-size: .76rem;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .image-section {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 16px;
+        align-items: stretch;
+        margin: 14px 0 20px;
+    }
+
+    .image-preview {
+        min-height: 160px;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid var(--borde-rosa);
+        background: radial-gradient(circle at 70% 20%, rgba(255,255,255,.70), transparent 30%), linear-gradient(135deg, var(--rosa-1), var(--rosa-2));
+        box-shadow: var(--sombra-suave);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+    .image-placeholder {
+        text-align: center;
+        color: var(--marron-claro);
+        padding: 18px;
+        font-size: .85rem;
+    }
+
+        .image-placeholder i {
+            display: block;
+            font-size: 2rem;
+            color: var(--rosa-5);
+            margin-bottom: 8px;
+        }
+
+    .file-box {
+        border-radius: 24px;
+        background: linear-gradient(135deg, #FFFFFF, #FFF8FA);
+        border: 1px solid var(--borde-rosa);
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .file-box-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--negro);
+        font-weight: 900;
+        margin-bottom: 7px;
+        font-size: .92rem;
+    }
+
+        .file-box-title i {
+            color: var(--rosa-5);
+        }
+
+    .file-box p {
+        color: var(--marron-claro);
+        font-size: .82rem;
+        line-height: 1.55;
+        margin-bottom: 12px;
+    }
+
+    input[type="file"].form-control {
+        padding: 11px 14px;
+        cursor: pointer;
+    }
+
+    .status-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 4px;
+    }
+
+    .check-card {
+        min-height: 66px;
+        border-radius: 20px;
+        border: 1px solid var(--borde-rosa);
+        background: linear-gradient(135deg, #FFFFFF, #FFF8FA);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        border-color: var(--rosa-5);
+        accent-color: var(--rosa-5);
+        cursor: pointer;
+    }
+
+        .form-check-input:checked {
+            background-color: var(--rosa-5);
+            border-color: var(--rosa-5);
+        }
+
+    .check-card label {
+        color: var(--negro);
+        font-weight: 900;
+        cursor: pointer;
+        font-size: .9rem;
+    }
+
+    .type-note {
+        min-height: 66px;
+        border-radius: 20px;
+        background: var(--rosa-1);
+        border: 1px solid var(--borde-rosa);
+        padding: 14px 16px;
+        color: var(--marron);
+        font-size: .82rem;
+        line-height: 1.45;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .type-note i {
+            color: var(--rosa-5);
+            font-size: 1.1rem;
+        }
+
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+    }
+
+    .btn-save {
+        min-height: 48px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--negro), #473937);
+        color: white;
+        font-weight: 900;
+        padding: 0 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        box-shadow: 0 14px 28px rgba(39, 33, 33, .16);
+        transition: .25s ease;
+        text-decoration: none;
+    }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 38px rgba(39, 33, 33, .22);
+            color: white;
+        }
+
+    .btn-back {
+        min-height: 48px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.78);
+        color: var(--marron);
+        border: 1px solid var(--borde-rosa);
+        font-weight: 900;
+        padding: 0 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        text-decoration: none;
+        transition: .25s ease;
+    }
+
+        .btn-back:hover {
+            color: var(--negro);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-suave);
+        }
+
+    .compat-form {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: end;
+        margin-bottom: 20px;
+    }
+
+    .compat-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+        .compat-table thead th {
+            color: var(--marron-claro);
+            font-size: .72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 900;
+            padding: 0 12px 2px;
+        }
+
+        .compat-table tbody tr {
+            background: linear-gradient(135deg, #FFFFFF, #FFF8FA);
+            box-shadow: var(--sombra-suave);
+        }
+
+        .compat-table tbody td {
+            padding: 12px;
+            color: var(--marron);
+            border-top: 1px solid var(--borde-rosa);
+            border-bottom: 1px solid var(--borde-rosa);
+            font-size: .9rem;
+        }
+
+            .compat-table tbody td:first-child {
+                border-left: 1px solid var(--borde-rosa);
+                border-radius: 16px 0 0 16px;
+            }
+
+            .compat-table tbody td:last-child {
+                border-right: 1px solid var(--borde-rosa);
+                border-radius: 0 16px 16px 0;
+                text-align: right;
+            }
+
+    .compat-id {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 30px;
+        border-radius: 999px;
+        background: var(--rosa-2);
+        color: var(--rosa-5);
+        font-weight: 900;
+        font-size: .82rem;
+    }
+
+    .compat-name {
+        font-weight: 900;
+        color: var(--negro);
+    }
+
+    .btn-delete {
+        border: 1px solid rgba(220, 53, 69, .25);
+        background: rgba(220, 53, 69, .06);
+        color: #C0394B;
+        min-height: 34px;
+        border-radius: 999px;
+        padding: 0 14px;
+        font-weight: 900;
+        font-size: .8rem;
+        transition: .25s ease;
+    }
+
+        .btn-delete:hover {
+            background: #C0394B;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .empty-box {
+        border: 1px dashed var(--borde-rosa);
+        background: var(--rosa-1);
+        border-radius: 22px;
+        padding: 28px 20px;
+        text-align: center;
+        color: var(--marron-claro);
+    }
+
+        .empty-box i {
+            display: block;
+            font-size: 2.2rem;
+            color: var(--rosa-5);
+            margin-bottom: 10px;
+        }
+
+        .empty-box h5 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--negro);
+            font-size: 1.45rem;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+    .mini-note {
+        margin-top: 14px;
+        color: var(--marron-claro);
+        font-size: .82rem;
+        line-height: 1.55;
+        text-align: center;
+    }
+
+        .mini-note strong {
+            color: var(--marron);
+        }
+
+    @@media (max-width: 991px) {
+        .edit-product-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .product-brand {
+            padding: 42px 34px;
+        }
+
+        .product-content {
+            padding: 42px 34px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .content-top {
+            flex-direction: column;
+        }
+
+        .form-grid-two,
+        .image-section,
+        .status-row,
+        .compat-form {
+            grid-template-columns: 1fr;
+        }
+
+        .image-preview {
+            min-height: 220px;
+        }
+
+        .compat-table {
+            min-width: 560px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .edit-product-page {
+            padding: 28px 12px 54px;
+        }
+
+        .edit-product-shell {
+            border-radius: 26px;
+        }
+
+        .product-brand,
+        .product-content {
+            padding: 34px 22px;
+        }
+
+        .brand-title {
+            font-size: 2.75rem;
+        }
+
+        .content-title {
+            font-size: 2.25rem;
+        }
+
+        .panel-body-custom {
+            padding: 22px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-save,
+        .btn-back,
+        .btn-dashboard-mini {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="edit-product-page">
+    <div class="container">
+
+        <div class="edit-product-shell">
+
+            <div class="edit-product-layout">
+
+                <!-- PANEL IZQUIERDO -->
+                <aside class="product-brand">
+
+                    <div class="brand-content">
+
+                        <div class="brand-kicker">
+                            Gestión de productos
+                        </div>
+
+                        <div class="brand-title">
+                            Vienna
+                            <span>Bake House</span>
+                        </div>
+
+                        <div class="brand-line"></div>
+
+                        <h2>
+                            Edita y conecta productos.
+                        </h2>
+
+                        <p>
+                            Actualiza la información principal del producto y administra sus compatibilidades
+                            para mantener un catálogo ordenado y elegante.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+                <!-- CONTENIDO DERECHO -->
+                <section class="product-content">
+
+                    <div class="content-top">
+
+                        <div>
+                            <div class="content-kicker">
+                                Editar producto compatible
+                            </div>
+
+                            <h1 class="content-title">
+                                Actualizar <span>producto</span>
+                            </h1>
+
+                            <p class="content-subtitle">
+                                Modifica los datos del producto, cambia su imagen y agrega productos compatibles de forma rápida.
+                            </p>
+                        </div>
+
+                        <a asp-controller="Dashboard"
+                           asp-action="Index"
+                           class="btn-dashboard-mini">
+                            Dashboard
+                            <i class="bi bi-house-door"></i>
+                        </a>
+
+                    </div>
+
+                    <!-- FORMULARIO PRODUCTO -->
+                    <div class="edit-panel">
+
+                        <div class="panel-head">
+                            <div class="panel-head-row">
+
+                                <div class="panel-icon">
+                                    <i class="bi bi-box-seam"></i>
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Información del producto
+                                    </h3>
+
+                                    <p>
+                                        Edita los campos principales del producto seleccionado.
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="panel-body-custom">
+
+                            <form asp-action="EditarC" method="post" enctype="multipart/form-data">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden" asp-for="IdProducto" />
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                                <div class="form-grid-two">
+
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            Nombre
+                                        </label>
+
+                                        <input asp-for="Nombre"
+                                               class="form-control"
+                                               placeholder="Ej. Torta Red Velvet" />
+
+                                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            Precio
+                                        </label>
+
+                                        <input asp-for="Precio"
+                                               type="number"
+                                               step="0.01"
+                                               class="form-control"
+                                               placeholder="0.00" />
+
+                                        <span asp-validation-for="Precio" class="text-danger small"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Descripción
+                                    </label>
+
+                                    <input asp-for="Descripcion"
+                                           class="form-control"
+                                           placeholder="Describe el producto de forma breve" />
+
+                                    <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-grid-two">
+
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            Consumo
+                                        </label>
+
+                                        <input asp-for="Consumo"
+                                               type="number"
+                                               class="form-control"
+                                               placeholder="Cantidad de consumo" />
+
+                                        <span asp-validation-for="Consumo" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            Tipo
+                                        </label>
+
+                                        <select asp-for="Tipo"
+                                                class="form-select">
+
+                                            <option value="0">Personalizado</option>
+                                            <option value="1">Final</option>
+
+                                        </select>
+
+                                        <span asp-validation-for="Tipo" class="text-danger small"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Categoría
+                                    </label>
+
+                                    <select asp-for="IdCategoria"
+                                            class="form-select">
+
+                                        @foreach (var categoria in ViewBag.Categorias)
+                                        {
+                                            <option value="@categoria.IdCategoria">
+                                                @categoria.Nombre
+                                            </option>
+                                        }
+
+                                    </select>
+
+                                    <span asp-validation-for="IdCategoria" class="text-danger small"></span>
+                                </div>
+
+                                <div class="image-section">
+
+                                    <div class="image-preview">
+
+                                        @if (!string.IsNullOrEmpty(Model.RutaImagen))
+                                        {
+                                            <img src="@Url.Content(Model.RutaImagen)"
+                                                 alt="Imagen actual del producto" />
+                                        }
+                                        else
+                                        {
+                                            <div class="image-placeholder">
+                                                <i class="bi bi-image"></i>
+                                                <span>Sin imagen actual</span>
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="file-box">
+
+                                        <div class="file-box-title">
+                                            <i class="bi bi-cloud-arrow-up"></i>
+                                            Imagen del producto
+                                        </div>
+
+                                        <p>
+                                            Sube una nueva imagen solo si deseas reemplazar la imagen actual.
+                                        </p>
+
+                                        <input type="file"
+                                               name="imagen"
+                                               class="form-control"
+                                               accept="image/*" />
+
+                                    </div>
+
+                                </div>
+
+                                <div class="status-row">
+
+                                    <div class="check-card">
+
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="ActivoCheck"
+                                               name="Activo"
+                                               value="1"
+                                               @(Model.Activo == "1" ? "checked" : "") />
+
+                                        <label for="ActivoCheck">
+                                            Producto activo
+                                        </label>
+
+                                    </div>
+
+                                    <div class="type-note">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Si está activo, podrá mostrarse en el catálogo.
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <input type="hidden" name="Activo" value="0" />
+
+                                <div class="form-actions">
+
+                                    <button type="submit"
+                                            class="btn-save">
+                                        Guardar cambios
+                                        <i class="bi bi-arrow-right"></i>
+                                    </button>
+
+                                    <a asp-action="Index"
+                                       class="btn-back">
+                                        Volver
+                                        <i class="bi bi-arrow-left"></i>
+                                    </a>
+
+                                </div>
+
+                            </form>
+
+                            <div class="mini-note">
+                                <strong>Nota:</strong>
+                                revisa la imagen, categoría y estado antes de guardar.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- COMPATIBILIDADES -->
+                    <div class="edit-panel">
+
+                        <div class="panel-head">
+                            <div class="panel-head-row">
+
+                                <div class="panel-icon">
+                                    <i class="bi bi-link-45deg"></i>
+                                </div>
+
+                                <div>
+                                    <h3>
+                                        Compatibilidades
+                                    </h3>
+
+                                    <p>
+                                        Agrega o elimina productos relacionados con este producto.
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="panel-body-custom">
+
+                            <form asp-action="AgregarCompatibilidad"
+                                  method="post"
+                                  class="compat-form">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="idProductoA"
+                                       value="@Model.IdProducto" />
+
+                                <div>
+                                    <label class="form-label">
+                                        Producto compatible
+                                    </label>
+
+                                    <select name="idProductoB"
+                                            class="form-select">
+
+                                        @foreach (var producto in ViewBag.ProductosCompatibles)
+                                        {
+                                            <option value="@producto.IdProducto">
+                                                @producto.Nombre
+                                            </option>
+                                        }
+
+                                    </select>
+                                </div>
+
+                                <button type="submit"
+                                        class="btn-save">
+                                    Agregar
+                                    <i class="bi bi-plus-circle"></i>
+                                </button>
+
+                            </form>
+
+                            @if (Model.Compatibilidades != null && Model.Compatibilidades.Any())
+                            {
+                                <div class="table-responsive">
+
+                                    <table class="compat-table">
+
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Producto compatible</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            @foreach (var compatibilidad in Model.Compatibilidades)
+                                            {
+                                                <tr>
+
+                                                    <td>
+                                                        <span class="compat-id">
+                                                            @compatibilidad.IdProductoB
+                                                        </span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span class="compat-name">
+                                                            @compatibilidad.ProductoB.Nombre
+                                                        </span>
+                                                    </td>
+
+                                                    <td>
+
+                                                        <form asp-action="EliminarCompatibilidad"
+                                                              method="post"
+                                                              class="d-inline">
+
+                                                            @Html.AntiForgeryToken()
+
+                                                            <input type="hidden"
+                                                                   name="idProductoA"
+                                                                   value="@compatibilidad.IdProductoA" />
+
+                                                            <input type="hidden"
+                                                                   name="idProductoB"
+                                                                   value="@compatibilidad.IdProductoB" />
+
+                                                            <button type="submit"
+                                                                    class="btn-delete"
+                                                                    onclick="return confirm('¿Seguro que deseas eliminar esta compatibilidad?');">
+                                                                Eliminar
+                                                            </button>
+
+                                                        </form>
+
+                                                    </td>
+
+                                                </tr>
+                                            }
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-box">
+                                    <i class="bi bi-link"></i>
+
+                                    <h5>
+                                        Sin compatibilidades
+                                    </h5>
+
+                                    <p class="mb-0">
+                                        Este producto todavía no tiene productos compatibles agregados.
+                                    </p>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
