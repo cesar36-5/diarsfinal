@@ -43,7 +43,9 @@ jobs:
           /d:sonar.token="$SONAR_TOKEN" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.projectBaseDir="${{ github.workspace }}" \
-          /d:sonar.exclusions="TestProject1/**,**/wwwroot/lib/**,**/*.min.js,**/*.min.css"
+          /d:sonar.exclusions="TestProject1/**,**/wwwroot/lib/**,**/*.min.js,**/*.min.css" \
+          /d:sonar.coverage.exclusions="**/Program.cs,**/Migrations/**" \
+          /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
 
     - name: Restaurar dependencias
       run: dotnet restore DiarsFinal/DiarsFinal.sln
@@ -51,8 +53,8 @@ jobs:
     - name: Compilar solución
       run: dotnet build DiarsFinal/DiarsFinal.sln --no-restore --configuration Release
 
-    - name: Ejecutar solo UnitTests
-      run: dotnet test TestProject1/TestProject1.csproj --no-build --configuration Release --filter "FullyQualifiedName~UnitTests" --verbosity normal
+    - name: Ejecutar solo UnitTests con Cobertura
+      run: dotnet test TestProject1/TestProject1.csproj --configuration Release --filter "FullyQualifiedName~UnitTests" --collect:"XPlat Code Coverage;Format=opencover" --verbosity normal
 
     - name: Finalizar y enviar resultados a SonarCloud
       env:
