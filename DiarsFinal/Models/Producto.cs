@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiarsFinal.Models;
 
 public partial class Producto
 {
-    public int IdProducto { get; set; }
+    public int? IdProducto { get; set; }
 
+    [Required]
     public int IdCategoria { get; set; }
 
+    [Required]
     public decimal Precio { get; set; }
 
     public string Descripcion { get; set; } = null!;
 
     public string? Nombre { get; set; }
 
-    public int Consumo { get; set; }
+    public int? Consumo { get; set; }
 
     public string Tipo { get; set; } = null!;
 

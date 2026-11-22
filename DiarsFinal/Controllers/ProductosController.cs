@@ -93,10 +93,6 @@ namespace DiarsFinal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(Producto producto, IFormFile imagen)
         {
-            Console.WriteLine("FILE NAME: " + imagen?.FileName);
-            Console.WriteLine("FILE SIZE: " + imagen?.Length);
-
-            Console.WriteLine("Request.Form files: " + Request.Form.Files.Count);
 
             var productoDB = await _productoData.ObtenerProducto(producto.IdProducto);
 

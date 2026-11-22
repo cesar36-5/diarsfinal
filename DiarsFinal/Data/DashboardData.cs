@@ -1,6 +1,7 @@
 ﻿using DiarsFinal.ViewModels.DiarsFinal.ViewModels;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using DiarsFinal.Helpers;
 
 namespace DiarsFinal.Data
 {

@@ -324,7 +324,6 @@ namespace DiarsFinal.Datos
         public async Task<List<ProductoTopVM>> TopProductosFinales()
         {
             return await _context.DetallePedidos
-                .Include(x => x.IdProductoNavigation)
                 .Where(x => x.IdPedidoNavigation.Tipo == "0") // FINAL
                 .GroupBy(x => x.IdProductoNavigation.Nombre)
                 .Select(g => new ProductoTopVM
@@ -340,7 +339,6 @@ namespace DiarsFinal.Datos
         public async Task<List<ProductoTopVM>> TopProductosPersonalizados()
         {
             return await _context.DetallePersonalizados
-                .Include(x => x.IdProductoNavigation)
                 .GroupBy(x => x.IdProductoNavigation.Nombre)
                 .Select(g => new ProductoTopVM
                 {

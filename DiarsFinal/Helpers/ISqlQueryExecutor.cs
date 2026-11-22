@@ -1,8 +1,11 @@
 ﻿using System.Data;
 
-public interface ISqlQueryExecutor
+namespace DiarsFinal.Helpers
 {
-    Task<DataTable> EjecutarConsultaAsync(
-        string query,
-        Dictionary<string, object> parametros);
+    public interface ISqlQueryExecutor
+    {
+        Task<DataTable> EjecutarConsultaAsync(
+            string query,
+            Dictionary<string, object> parametros);
+    }
 }

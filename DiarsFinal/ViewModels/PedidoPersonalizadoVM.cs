@@ -1,4 +1,5 @@
 ﻿using DiarsFinal.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiarsFinal.ViewModels
 {
@@ -16,6 +17,7 @@ namespace DiarsFinal.ViewModels
 
         public string Telefono { get; set; } = "";
 
+        [Required]
         public DateTime FechaEntrega { get; set; }
         public string? Comentario { get; set; }
     }
