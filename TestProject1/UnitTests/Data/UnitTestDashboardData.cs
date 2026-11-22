@@ -2,6 +2,7 @@
 using DiarsFinal.Datos;
 using Moq;
 using NUnit.Framework;
+using DiarsFinal.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
