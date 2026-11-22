@@ -1,4 +1,4 @@
-name: Ejecutar Tests Unitarios
+name: Ejecutar Tests Unitarios y SonarCloud
 
 on:
   push:
@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Descargar código
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Configurar .NET
       uses: actions/setup-dotnet@v4
@@ -20,6 +22,27 @@ jobs:
         dotnet-version: |
           8.0.x
           9.0.x
+          10.0.x
+
+    - name: Configurar Java (Requerido por SonarScanner)
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Instalar SonarScanner
+      run: dotnet tool install --global dotnet-sonarscanner
+
+    - name: Iniciar análisis de SonarCloud
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        dotnet sonarscanner begin \
+          /k:"cesar36-5_diarsfinal" \
+          /o:"cesar36-5" \
+          /d:sonar.token="$SONAR_TOKEN" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.exclusions="**/wwwroot/lib/**,**/*.min.js,**/*.min.css"
 
     - name: Restaurar dependencias
       run: dotnet restore DiarsFinal/DiarsFinal.sln
@@ -29,3 +52,8 @@ jobs:
 
     - name: Ejecutar solo UnitTests
       run: dotnet test TestProject1/TestProject1.csproj --no-build --configuration Release --filter "FullyQualifiedName~UnitTests" --verbosity normal
+
+    - name: Finalizar y enviar resultados a SonarCloud
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
