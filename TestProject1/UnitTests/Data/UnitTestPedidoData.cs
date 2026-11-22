@@ -140,7 +140,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 3,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);
@@ -201,7 +201,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 3,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);
@@ -649,7 +649,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 3,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);
@@ -929,7 +929,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 3,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);
@@ -1141,7 +1141,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 1,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);

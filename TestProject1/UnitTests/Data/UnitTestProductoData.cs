@@ -58,7 +58,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = activo,
                 Consumo = 1,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);
@@ -122,7 +122,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 2,
                 Precio = 35m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             // Act
@@ -216,7 +216,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 1,
                 Precio = 20m,
-                IdCategoria = categoria1.IdCategoria
+                IdCategoria = categoria1.IdCategoria.Value
             };
 
             var producto2 = new Producto
@@ -227,7 +227,7 @@ namespace TestProject1.UnitTests.Data
                 Activo = "1",
                 Consumo = 2,
                 Precio = 30m,
-                IdCategoria = categoria2.IdCategoria
+                IdCategoria = categoria2.IdCategoria.Value
             };
 
             _context.Productos.AddRange(producto1, producto2);

@@ -108,12 +108,12 @@ namespace TestProject1.UnitTests.Controller
             var producto = new Producto
             {
                 Nombre = nombre,
-                Descripcion = "Descripción de " + nombre,
+                Descripcion= "Descripción de " + nombre,
                 Tipo = tipo,
                 Activo = activo,
                 Consumo = 1,
                 Precio = 20m,
-                IdCategoria = categoria.IdCategoria
+                IdCategoria = categoria.IdCategoria.Value
             };
 
             _context.Productos.Add(producto);

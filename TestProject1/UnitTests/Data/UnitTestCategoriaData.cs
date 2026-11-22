@@ -173,7 +173,7 @@ namespace TestProject1.UnitTests.Data
             _context.Categoria.Add(categoria);
             await _context.SaveChangesAsync();
 
-            var id = categoria.IdCategoria;
+            var id = categoria.IdCategoria.Value;
 
             // Act: eliminar la categoría
             var resultado = await _categoriaData.EliminarCategoria(id);

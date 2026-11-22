@@ -173,7 +173,7 @@ namespace TestProject1.UnitTests.Controller
             _context.Categoria.Add(categoria);
             await _context.SaveChangesAsync();
 
-            int id = categoria.IdCategoria;
+            int id = categoria.IdCategoria.Value;
 
             // Act
             var resultado = await _controller.Editar(id);
@@ -218,7 +218,7 @@ namespace TestProject1.UnitTests.Controller
             _context.Categoria.Add(existente);
             await _context.SaveChangesAsync();
 
-            int id = existente.IdCategoria;
+            int id = existente.IdCategoria.Value;
 
             // Dejar de rastrear la instancia original
             _context.Entry(existente).State = EntityState.Detached;
@@ -309,7 +309,7 @@ namespace TestProject1.UnitTests.Controller
             _context.Categoria.Add(categoria);
             await _context.SaveChangesAsync();
 
-            int id = categoria.IdCategoria;
+            int id = categoria.IdCategoria.Value;
 
             // Act
             var resultado = await _controller.Eliminar(id);
