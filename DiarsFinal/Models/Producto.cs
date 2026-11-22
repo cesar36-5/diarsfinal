@@ -6,7 +6,7 @@ namespace DiarsFinal.Models;
 
 public partial class Producto
 {
-    public int? IdProducto { get; set; }
+    public int IdProducto { get; set; }
 
     [Required]
     public int IdCategoria { get; set; }

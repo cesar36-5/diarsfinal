@@ -73,7 +73,7 @@ namespace DiarsFinal.Datos
                 await _context.SaveChangesAsync();
             }
 
-            int consumoTotal = 0;
+            int? consumoTotal = 0;
             decimal precioTotal = 0;
 
             foreach (var item in carrito)
@@ -380,7 +380,7 @@ namespace DiarsFinal.Datos
             if (esp == null)
                 return (-1, 0);
 
-            int consumoTotal = 0;
+            int? consumoTotal = 0;
             decimal precioTotal = 0;
 
             foreach (var sel in vm.Selecciones)
